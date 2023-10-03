@@ -37,6 +37,7 @@ Unstructured logging
     Unstructured logging refers to producing string log messages which embed all attached
     information within that string.
 
+---------------------------
 Implementation requirements
 ---------------------------
 Drivers SHOULD implement support for logging in a manner that is idiomatic for their language and

@@ -1,4 +1,4 @@
-description: "operations ignore deprected timeout options if timeoutMS is set"
+description: "operations ignore deprecated timeout options if timeoutMS is set"
 
 schemaVersion: "1.9"
 
@@ -191,7 +191,7 @@ tests:
                 commitTransaction: 1
                 # Assert that the final maxTimeMS field is derived from timeoutMS, not maxCommitTimeMS.
                 maxTimeMS: { $$lte: *timeoutMS }
-  
+
   # Tests for abortTransaction. These are not included in the operations loop because the tests need to execute
   # additional "startTransaction" and "insertOne" operations to establish a server-side transaction.
 
