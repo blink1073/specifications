@@ -103,9 +103,9 @@ Clients check servers sooner in response to certain events.
 
 If a `server API version`_ is requested, then the driver must use hello for monitoring.
 If a server API version is not requested, the initial handshake using the legacy hello
-command must include `helloOk: true`. If the response contains `helloOk: true`, then the
-driver must use the `hello` command for monitoring. If the response does not contain
-`helloOk: true`, then the driver must use the legacy hello command for monitoring.
+command must include ``helloOk: true``. If the response contains ``helloOk: true``, then the
+driver must use the ``hello`` command for monitoring. If the response does not contain
+``helloOk: true``, then the driver must use the legacy hello command for monitoring.
 
 The socket used to check a server MUST use the same
 `connectTimeoutMS <https://www.mongodb.com/docs/manual/reference/connection-string/>`_
@@ -612,9 +612,9 @@ timeout) or a command error (``ok: 0``), the client MUST follow these steps:
 #. Clear the connection pool for the server (See `Clear the connection pool on
    both network and command errors`_). For CMAP compliant drivers, clearing the
    pool MUST be synchronized with marking the server as Unknown (see `Why
-   synchronize clearing a server's pool with updating the topology?`_). If this 
-   was a network timeout error, then the pool MUST be cleared with interruptInUseConnections = true 
-   (see `Why does the pool need to support closing in use connections as part of 
+   synchronize clearing a server's pool with updating the topology?`_). If this
+   was a network timeout error, then the pool MUST be cleared with interruptInUseConnections = true
+   (see `Why does the pool need to support closing in use connections as part of
    its clear logic?`_)
 #. If this was a network error and the server was in a known state before the
    error, the client MUST NOT sleep and MUST begin the next check immediately.
@@ -626,10 +626,10 @@ timeout) or a command error (``ok: 0``), the client MUST follow these steps:
 
    - Note that even in the streaming protocol, a monitor in this state will
      wait for an application operation to `request an immediate check`_ or
-     for the heartbeatFrequencyMS timeout to expire before begining the next
+     for the heartbeatFrequencyMS timeout to expire before beginning the next
      check.
 
-See the pseudocode in the `Monitor thread` section.
+See the pseudocode in the ``Monitor thread`` section.
 
 Note that this rule applies only to server checks during monitoring.
 It does *not* apply when multi-threaded
@@ -1022,8 +1022,8 @@ with the polling protocol as well as consistency with the initial RTT provided t
 connection handshake which also uses the hello or legacy hello commands. Additionally,
 mongocryptd does not allow the ping command but does allow hello or legacy hello.
 
-Why not use `awaitedTimeMS` in the server response to calculate RTT in the streaming protocol?
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Why not use ``awaitedTimeMS`` in the server response to calculate RTT in the streaming protocol?
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 One approach to calculating RTT in the streaming protocol would be to have the server
 return an ``awaitedTimeMS`` in its ``hello`` or legacy hello response. A driver could then
@@ -1031,7 +1031,7 @@ determine the RTT by calculating the difference between the initial request, or 
 and the ``awaitedTimeMS``.
 
 We rejected this design because of a number of issue with the unreliability of clocks in
-distributed sytems. Clocks skew between local and remote system clocks. This approach mixes
+distributed systems. Clocks skew between local and remote system clocks. This approach mixes
 two notions of time: the local clock times the whole operation while the remote clock times
 the wait. This means that if these clocks tick at different rates, or there are anomalies
 like clock changes, you will get bad results. To make matters worse, you will be comparing
@@ -1103,8 +1103,8 @@ A monitor clears the connection pool when a server check fails with a network
 or command error (`Network or command error during server check`_).
 When the check fails with a network error it is likely that all connections
 to that server are also closed.
-(See `JAVA-1252 <https://jira.mongodb.org/browse/JAVA-1252>`_). When the check fails 
-with a network timeout error, a monitor MUST set interruptInUseConnections to true. 
+(See `JAVA-1252 <https://jira.mongodb.org/browse/JAVA-1252>`_). When the check fails
+with a network timeout error, a monitor MUST set interruptInUseConnections to true.
 See, `Why does the pool need to support closing in use connections as part of its clear logic?`_.
 
 When the server is shutting down, it may respond to hello or legacy hello commands with
@@ -1148,7 +1148,7 @@ Changelog
 :2020-03-09: A monitor check that creates a new connection MUST use the
              connection's handshake to update the topology.
 :2020-04-20: Add streaming heartbeat protocol.
-:2020-05-20: Include rationale for why we don't use `awaitedTimeMS`
+:2020-05-20: Include rationale for why we don't use ``awaitedTimeMS``
 :2020-06-11: Support connectTimeoutMS=0 in streaming heartbeat protocol.
 :2020-12-17: Mark the pool for a server as "ready" after performing a successful
              check. Synchronize pool clearing with SDAM updates.

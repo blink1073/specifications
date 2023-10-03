@@ -234,13 +234,13 @@ KMS provider options.
 
 mongocryptd
 -----------
-`mongocryptd` is a singleton local process needed for auto-encryption when no
+``mongocryptd`` is a singleton local process needed for auto-encryption when no
 crypt_shared_ library is used. It speaks the MongoDB wire protocol and the
 driver uses mongocryptd_ by connecting with a MongoClient. By default, if
 crypt_shared_ is unavailable, the driver should attempt to automatically spawn
 mongocryptd_. If the MongoClient is configured with
-`extraOptions.mongocryptdBypassSpawn` set to |true|, OR `bypassAutoEncryption`
-is set to |true|, OR `bypassQueryAnalysis` is set to |true| then the driver will
+``extraOptions.mongocryptdBypassSpawn`` set to |true|, OR ``bypassAutoEncryption``
+is set to |true|, OR ``bypassQueryAnalysis`` is set to |true| then the driver will
 not attempt to spawn mongocryptd_.
 
 The mongocryptd_ process is responsible for self terminating after idling for a
@@ -549,46 +549,46 @@ driver should fill in the KMS options automatically.
 
 .. default-role:: math
 
-Once requested, drivers MUST create a new KMSProviders_ `P` according to the
+Once requested, drivers MUST create a new KMSProviders_ ``P`` according to the
 following process:
 
-1. Let `K` be the kmsProviders_ value provided by the user as part of the
+1. Let ``K`` be the kmsProviders_ value provided by the user as part of the
    original ClientEncryptionOpts_ or AutoEncryptionOpts_.
-2. Initialize `P` to an empty KMSProviders_ object.
-3. If `K` contains an ``aws`` property, and that property is an empty map:
+2. Initialize ``P`` to an empty KMSProviders_ object.
+3. If ``K`` contains an ``aws`` property, and that property is an empty map:
 
-   1. Attempt to obtain credentials `C` from the environment using similar logic
+   1. Attempt to obtain credentials ``C`` from the environment using similar logic
       as is detailed in `the obtaining-AWS-credentials section from the Driver
       Authentication specification`__, but ignoring the case of loading the
       credentials from a URI
-   2. If credentials `C` were successfully loaded, create a new AWSKMSOptions_
-      map from `C` and insert that map onto `P` as the ``aws`` property.
+   2. If credentials ``C`` were successfully loaded, create a new AWSKMSOptions_
+      map from ``C`` and insert that map onto ``P`` as the ``aws`` property.
 
-4. If `K` contains an ``gcp`` property, and that property is an empty map:
+4. If ``K`` contains an ``gcp`` property, and that property is an empty map:
 
-   1. Attempt to obtain credentials `C` from the environment logic as is
+   1. Attempt to obtain credentials ``C`` from the environment logic as is
       detailed in `Obtaining GCP Credentials`_.
-   2. If credentials `C` were successfully loaded, create a new GCPKMSOptions_
-      map from `C` and insert that map onto `P` as the ``gcp`` property.
+   2. If credentials ``C`` were successfully loaded, create a new GCPKMSOptions_
+      map from ``C`` and insert that map onto ``P`` as the ``gcp`` property.
 
-5. If `K` contains an ``azure`` property, and that property is an empty map:
+5. If ``K`` contains an ``azure`` property, and that property is an empty map:
 
    1. If there is a ``cachedAzureAccessToken`` AND the
       duration until ``azureAccessTokenExpireTime`` is greater than one minute,
-      insert ``cachedAzureAccessToken`` as the ``azure`` property on `P`.
+      insert ``cachedAzureAccessToken`` as the ``azure`` property on ``P``.
    2. Otherwise:
 
-      1. Let `t_0` be the current time.
-      2. Attempt to obtain an Azure VM Managed Identity Access Token `T` as
+      1. Let ``t_0`` be the current time.
+      2. Attempt to obtain an Azure VM Managed Identity Access Token ``T`` as
          detailed in `Obtaining an Access Token for Azure Key Vault`_.
-      3. If a token `T` with expire duration `d_{exp}` were obtained
-         successfully, create a new AzureAccessToken_ object with `T` as the
-         ``accessToken`` property. Insert that AzureAccessToken_ object into `P`
+      3. If a token ``T`` with expire duration ``d_{exp}`` were obtained
+         successfully, create a new AzureAccessToken_ object with ``T`` as the
+         ``accessToken`` property. Insert that AzureAccessToken_ object into ``P``
          as the ``azure`` property. Record the generated AzureAccessToken_ in
          ``cachedAzureAccessToken``. Record the ``azureAccessTokenExpireTime``
-         as `t_0 + d_{exp}`.
+         as ``t_0 + d_{exp}``.
 
-6. Return `P` as the additional KMS providers to libmongocrypt_.
+6. Return ``P`` as the additional KMS providers to libmongocrypt_.
 
 __ ../auth/auth.html#obtaining-credentials
 
@@ -600,7 +600,7 @@ Obtaining GCP Credentials
 Set ``HOST`` to ``metadata.google.internal``.
 
 Send an HTTP request to the URL
-`http://<HOST>/computeMetadata/v1/instance/service-accounts/default/token` with
+``http://<HOST>/computeMetadata/v1/instance/service-accounts/default/token`` with
 the header ``Metadata-Flavor: Google``.
 
 If the HTTP response code is not 200, return an error including the body of the
@@ -636,34 +636,34 @@ __ https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-az
 
 The below steps should be taken:
 
-1. Let `U` be a new URL, initialized from the URL string
+1. Let ``U`` be a new URL, initialized from the URL string
    :ts:`"http://169.254.169.254/metadata/identity/oauth2/token"`
-2. Add a query parameter ``api-version=2018-02-01`` to `U`.
-3. Add a query parameter ``resource=https://vault.azure.net/`` to `U`.
-4. Prepare an HTTP GET request `Req` based on `U`.
+2. Add a query parameter ``api-version=2018-02-01`` to ``U``.
+3. Add a query parameter ``resource=https://vault.azure.net/`` to ``U``.
+4. Prepare an HTTP GET request ``Req`` based on ``U``.
 
-   .. note:: All query parameters on `U` should be appropriately percent-encoded
+   .. note:: All query parameters on ``U`` should be appropriately percent-encoded
 
 5. Add HTTP headers ``Metadata: true`` and ``Accept: application/json`` to
-   `Req`.
-6. Issue `Req` to the Azure IMDS server ``169.254.169.254:80``. Let `Resp` be
+   ``Req``.
+6. Issue ``Req`` to the Azure IMDS server ``169.254.169.254:80``. Let ``Resp`` be
    the response from the server. If the HTTP response is not completely received
    within ten seconds, consider the request to have timed out, and return an
    error instead of an access token.
-7. If `Resp_{status} ≠ 200`, obtaining the access token has failed, and the HTTP
-   response body of `Resp` encodes information about the error that occurred.
+7. If ``Resp_{status} ≠ 200``, obtaining the access token has failed, and the HTTP
+   response body of ``Resp`` encodes information about the error that occurred.
    Return an error including the HTTP response body instead of an access token.
-8. Otherwise, let `J` be the JSON document encoded in the HTTP response body of
-   `Resp`.
-9. The result access token `T` is given as the ``access_token`` string property
-   of `J`. Return `T` as the resulting access token.
-10. The resulting "expires in" duration `d_{exp}` is a count of seconds given as
-    an ASCII-encoded integer string ``expires_in`` property of `J`.
+8. Otherwise, let ``J`` be the JSON document encoded in the HTTP response body of
+   ``Resp``.
+9. The result access token ``T`` is given as the ``access_token`` string property
+   of ``J``. Return ``T`` as the resulting access token.
+10. The resulting "expires in" duration ``d_{exp}`` is a count of seconds given as
+    an ASCII-encoded integer string ``expires_in`` property of ``J``.
 
 .. note::
 
-   If JSON decoding of `Resp` fails, or the ``access_token`` property is absent
-   from `J`, this is a protocol error from IMDS. Indicate this error to the
+   If JSON decoding of ``Resp`` fails, or the ``access_token`` property is absent
+   from ``J``, this is a protocol error from IMDS. Indicate this error to the
    requester of the access token.
 
 .. note::
@@ -683,7 +683,7 @@ Drivers MUST provide TLS options to configure TLS connections KMS providers.
 
 The TLS options SHOULD be consistent with the existing TLS options for MongoDB
 server TLS connections. The TLS options MUST enable setting a custom client
-certificate, equivalent to the `tlsCertificateKeyFile` URI option.
+certificate, equivalent to the ``tlsCertificateKeyFile`` URI option.
 
 Drivers SHOULD provide API that is consistent with configuring TLS options for
 MongoDB server TLS connections. New API to support the TLS options MUST support
@@ -713,21 +713,21 @@ Drivers SHOULD raise an error if insecure TLS options are set.
 The error MUST contain the message "Insecure TLS options prohibited".
 This includes options equivalent to the following URI options:
 
-- `tlsInsecure`
-- `tlsAllowInvalidCertificates`
-- `tlsAllowInvalidHostnames`
-- `tlsDisableCertificateRevocationCheck`
+- ``tlsInsecure``
+- ``tlsAllowInvalidCertificates``
+- ``tlsAllowInvalidHostnames``
+- ``tlsDisableCertificateRevocationCheck``
 
-Drivers MUST NOT raise an error if `tlsDisableOCSPEndpointCheck` is set.
-Setting `tlsDisableOCSPEndpointCheck` may prevent operation errors when OCSP responders are unresponsive.
+Drivers MUST NOT raise an error if ``tlsDisableOCSPEndpointCheck`` is set.
+Setting ``tlsDisableOCSPEndpointCheck`` may prevent operation errors when OCSP responders are unresponsive.
 
 See the OCSP specification for a description of the default values of
 `tlsDisableOCSPEndpointCheck
 <https://github.com/mongodb/specifications/blob/master/source/ocsp-support/ocsp-support.rst#tlsdisableocspendpointcheck>`_
 and `tlsDisableCertificateRevocationCheck
 <https://github.com/mongodb/specifications/blob/master/source/ocsp-support/ocsp-support.rst#tlsdisablecertificaterevocationcheck>`_
-Drivers MUST NOT modify the default value of `tlsDisableOCSPEndpointCheck` and
-`tlsDisableCertificateRevocationCheck` for KMS TLS connections.
+Drivers MUST NOT modify the default value of ``tlsDisableOCSPEndpointCheck`` and
+``tlsDisableCertificateRevocationCheck`` for KMS TLS connections.
 
 See `Why do KMS providers require TLS options?`_
 
@@ -812,7 +812,7 @@ load. Refer:
 
 
 ``extraOptions.cryptSharedLibRequired``
-````````````````````````````````````
+```````````````````````````````````````
 
 :type: :ts:`boolean`
 :default: |false|
@@ -822,9 +822,9 @@ load. Refer:
 If |true|, the driver MUST refuse to continue unless crypt_shared_ was loaded
 successfully.
 
-If, after initializing a `libmongocrypt_handle`, crypt_shared_ is detected to be
+If, after initializing a ``libmongocrypt_handle``, crypt_shared_ is detected to be
 unavailable AND |opt-crypt_shared-required| is |true|, the driver MUST consider
-the `libmongocrypt_handle` to be invalid and return an error to the user. Refer:
+the ``libmongocrypt_handle`` to be invalid and return an error to the user. Refer:
 
 - `Enabling crypt_shared`_
 - `Managing mongocryptd`_
@@ -880,28 +880,28 @@ The convenience methods support the following lookup process for finding the
 .. default-role:: math
 
 Assume an exposition-only function
-`GetEncryptedFields(opts, collName, dbName, askDb)`, where `opts` is a set of
-options, `collName` is the name of the collection, `dbName` is the name of the
-database associated with that collection, and `askDb` is a boolean value. The
-resulting ``encryptedFields`` `EF` is found by:
+``GetEncryptedFields(opts, collName, dbName, askDb)``, where ``opts`` is a set of
+options, ``collName`` is the name of the collection, ``dbName`` is the name of the
+database associated with that collection, and ``askDb`` is a boolean value. The
+resulting ``encryptedFields`` ``EF`` is found by:
 
-1. Let `QualName` be the string formed by joining `dbName` and `collName` with
+1. Let ``QualName`` be the string formed by joining ``dbName`` and ``collName`` with
    an ASCII dot ``"."``.
-2. If `opts` contains an ``"encryptedFields"`` property, then `EF` is the value
+2. If ``opts`` contains an ``"encryptedFields"`` property, then ``EF`` is the value
    of that property.
 3. Otherwise, if ``AutoEncryptionOptions.encryptedFieldsMap`` contains an
-   element named by `QualName`, then `EF` is the value of that element.
-4. Otherwise, if `askDb` is `true`:
+   element named by ``QualName``, then ``EF`` is the value of that element.
+4. Otherwise, if ``askDb`` is ``true``:
 
    1. Issue a ``listCollections`` command against the database named by
-      `dbName`, filtered by ``{name: <collName>}``. Let the result be the
-      document `L`.
-   2. If `L` contains an ``options`` document element, and that element contains
-      an ``encryptedFields`` document element, `EF` is `L`\
+      ``dbName``, filtered by ``{name: <collName>}``. Let the result be the
+      document ``L``.
+   2. If ``L`` contains an ``options`` document element, and that element contains
+      an ``encryptedFields`` document element, ``EF`` is ``L``\
       ``["options"]["encryptedFields"]``.
-   3. Otherwise, `EF` is *not-found*
+   3. Otherwise, ``EF`` is *not-found*
 
-5. Otherwise, `EF` is considered *not-found*.
+5. Otherwise, ``EF`` is considered *not-found*.
 
 
 Create Collection Helper
@@ -924,9 +924,9 @@ command.
    options.
 
 For a helper function, ``CreateCollection(collectionName, collectionOptions)``
-with the name of the database associated as `dbName`, look up the encrypted
+with the name of the database associated as ``dbName``, look up the encrypted
 fields ``encryptedFields`` for the collection as
-`GetEncryptedFields(collectionOptions, collectionName, dbName, false)`
+``GetEncryptedFields(collectionOptions, collectionName, dbName, false)``
 (`See here <GetEncryptedFields_>`_).
 
 If a set of ``encryptedFields`` was found, then do the following operations. If
@@ -960,46 +960,46 @@ Create Encrypted Collection Helper
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To support automatic generation of encryption data keys, a helper
-`CreateEncryptedCollection(CE, database, collName, collOpts, kmsProvider, masterKey)`
-is defined, where `CE` is a ClientEncryption_ object, `kmsProvider` is a
-KMSProviderName_ and `masterKey` is equivalent to the `masterKey` defined in DataKeyOpts_.
+``CreateEncryptedCollection(CE, database, collName, collOpts, kmsProvider, masterKey)``
+is defined, where ``CE`` is a ClientEncryption_ object, ``kmsProvider`` is a
+KMSProviderName_ and ``masterKey`` is equivalent to the ``masterKey`` defined in DataKeyOpts_.
 It has the following behavior:
 
-- If `collOpts` contains an ``"encryptedFields"`` property, then `EF` is the value
+- If ``collOpts`` contains an ``"encryptedFields"`` property, then ``EF`` is the value
   of that property.  Otherwise, report an error that there are no ``encryptedFields``
   defined for the collection.
-- Let `EF'` be a copy of `EF`. Update `EF'` in the following manner:
+- Let ``EF'`` be a copy of ``EF``. Update ``EF'`` in the following manner:
 
-  - Let `Fields` be the ``"fields"`` element within `EF'`.
-  - If `Fields` is present and is an array value, then for each element `F` of
-    `Fields`:
+  - Let ``Fields`` be the ``"fields"`` element within ``EF'``.
+  - If ``Fields`` is present and is an array value, then for each element ``F`` of
+    ``Fields``:
 
-    - If `F` is not a document element, skip it.
-    - Otherwise, if `F` has a ``"keyId"`` named element `K` and `K` is a
+    - If ``F`` is not a document element, skip it.
+    - Otherwise, if ``F`` has a ``"keyId"`` named element ``K`` and ``K`` is a
       ``null`` value:
 
-      - Create a DataKeyOpts_ named `dkOpts` with the `masterKey` argument.
-      - Let `D` be the result of ``CE.createDataKey(kmsProvider, dkOpts)``.
-      - If generating `D` resulted in an error `E`, the entire
-        `CreateEncryptedCollection` must now fail with error `E`. Return the
-        partially-formed `EF'` with the error so that the caller may know what
+      - Create a DataKeyOpts_ named ``dkOpts`` with the ``masterKey`` argument.
+      - Let ``D`` be the result of ``CE.createDataKey(kmsProvider, dkOpts)``.
+      - If generating ``D`` resulted in an error ``E``, the entire
+        ``CreateEncryptedCollection`` must now fail with error ``E``. Return the
+        partially-formed ``EF'`` with the error so that the caller may know what
         datakeys have already been created by the helper.
-      - Replace `K` in `F` with `D`.
+      - Replace ``K`` in ``F`` with ``D``.
 
-- Create a new set of options `collOpts'` duplicating `collOpts`. Set the
-  ``"encryptedFields"`` named element of `collOpts'` to `EF'`.
+- Create a new set of options ``collOpts'`` duplicating ``collOpts``. Set the
+  ``"encryptedFields"`` named element of ``collOpts'`` to ``EF'``.
 
 - Invoke the ``CreateCollection`` helper as
-  `CreateCollection(database, collName, collOpts')`. Return the resulting
-  collection and the generated `EF'`. If an error occurred, return the
-  resulting `EF` with the error so that the caller may know what datakeys
+  ``CreateCollection(database, collName, collOpts')``. Return the resulting
+  collection and the generated ``EF'``. If an error occurred, return the
+  resulting ``EF`` with the error so that the caller may know what datakeys
   have already been created by the helper.
 
 
-Drivers MUST document that `createEncryptedCollection` does not affect any
-auto encryption settings on existing MongoClients that are already configured with 
-auto encryption.  Users must configure auto encryption after creating the 
-encrypted collection with the `createEncryptedCollection` helper.
+Drivers MUST document that ``createEncryptedCollection`` does not affect any
+auto encryption settings on existing MongoClients that are already configured with
+auto encryption.  Users must configure auto encryption after creating the
+encrypted collection with the ``createEncryptedCollection`` helper.
 
 
 Drop Collection Helper
@@ -1016,14 +1016,14 @@ method and MUST NOT be passed to the `drop`_ command.
    and no longer allows names to deviate from the following:
 
    - ``enxcol_.<collectionName>.esc``
-   - ``enxcol_.<collectionName>.ecoc`
+   - ``enxcol_.<collectionName>.ecoc``
 
    Drivers SHOULD NOT document the ``escCollection`` and ``ecocCollection``
    options.
 
 For a helper function ``DropCollection(dropOptions)`` with associated collection
-named `collName` and database named `dbName`, look up the encrypted fields
-``encryptedFields`` as `GetEncryptedFields(dropOptions, collName, dbname, true)`
+named ``collName`` and database named ``dbName``, look up the encrypted fields
+``encryptedFields`` as ``GetEncryptedFields(dropOptions, collName, dbname, true)``
 (`See here <GetEncryptedFields_>`_).
 
 If a set of ``encryptedFields`` was found, then perform the following
@@ -1212,7 +1212,7 @@ Drivers MUST document the expected fields in the masterKey document for the
 "aws", "azure", "gcp", and "kmip" KMS providers. Additionally, they MUST
 document that masterKey is **required** for these providers and is not optional.
 
-The value of `endpoint` or `keyVaultEndpoint` is a host name with optional port
+The value of ``endpoint`` or ``keyVaultEndpoint`` is a host name with optional port
 number separated by a colon. E.g. "kms.us-east-1.amazonaws.com" or
 "kms.us-east-1.amazonaws.com:443". It is assumed that the host name is not an IP
 address or IP literal. Though drivers MUST NOT inspect the value of "endpoint"
@@ -1479,7 +1479,7 @@ Timeout: Client Side Encryption
 Integrating with libmongocrypt
 ==============================
 
-Each ClientEncryption instance MUST have one `libmongocrypt_handle`.
+Each ClientEncryption instance MUST have one ``libmongocrypt_handle``.
 
 `The libmongocrypt C API documentation <lmc-c-api_>`_
   For information on how to initialize, encrypt, decrypt with libmongocrypt.
@@ -1516,7 +1516,7 @@ libmongocrypt_ allows the driver to specify an arbitrary list of directory
 `search paths`_ in which to search for the crypt_shared_ dynamic library. The
 user-facing API does not expose this full search path functionality. This
 extended search path customization is intended to facilitate driver testing with
-crypt_shared_ (Refer: `Search Paths for Testing`_ and `Path Resolution Behavior`).
+crypt_shared_ (Refer: `Search Paths for Testing`_ and ``Path Resolution Behavior``).
 
 .. note::
 
@@ -1532,14 +1532,14 @@ Setting Search Paths
 --------------------
 
 For the user-facing API the driver MUST append the literal string
-:ts:`"$SYSTEM"` to the search paths for the `libmongocrypt_handle` if
-`bypassAutoEncryption` is not set to |true|, and MUST NOT append to the search
+:ts:`"$SYSTEM"` to the search paths for the ``libmongocrypt_handle`` if
+``bypassAutoEncryption`` is not set to |true|, and MUST NOT append to the search
 path if it is set to |true| or if the libmongocrypt_ instance is used
 for explicit encryption only (i.e. on the ClientEncryption class).
 For purposes of testing, a driver may use a different set of search paths.
 
 
-.. rubric:: Explaination
+.. rubric:: Explanation
 
 The `search paths`_ array in libmongocrypt_ allows the driver to customize the
 way that libmongocrypt_ searches and loads the crypt_shared_ library. For testing
@@ -1555,11 +1555,11 @@ Overriding the crypt_shared_ Library Path
 -----------------------------------------
 
 If |opt-path-override| was specified by the user, the driver MUST set the
-crypt_shared_ path override on the `libmongocrypt_handle`.
+crypt_shared_ path override on the ``libmongocrypt_handle``.
 
 .. note::
 
-   If a path override is set on a `libmongocrypt_handle` and libmongocrypt_
+   If a path override is set on a ``libmongocrypt_handle`` and libmongocrypt_
    fails to load crypt_shared_ from that filepath, then that will result in a
    hard-error when initializing libmongocrypt_.
 
@@ -1614,7 +1614,7 @@ These search paths use the following behavior:
 - Like with the `override path`_, if a `search path`_ is given as a relative
   path, that path will be resolved relative to the working directory of the
   operating system process.
-- If no `search paths`_ are appended to the `libmongocrypt_handle`, the
+- If no `search paths`_ are appended to the ``libmongocrypt_handle``, the
   resulting search paths will be an empty array, effectively
   `disabling crypt_shared`_ searching.
 
@@ -1626,9 +1626,9 @@ Detecting crypt_shared_ Availability
 ------------------------------------
 
 crypt_shared_ availability can only be reliably detected *after* initializing
-the `libmongocrypt_handle`.
+the ``libmongocrypt_handle``.
 
-After initializing the `libmongocrypt_handle`, the driver can detect whether
+After initializing the ``libmongocrypt_handle``, the driver can detect whether
 crypt_shared_ was successfully loaded by asking libmongocrypt_ for the
 crypt_shared_ version string. If the result is an empty string, libmongocrypt_
 did not load crypt_shared_ and the driver must rely on mongocryptd_ to mark
@@ -1645,7 +1645,7 @@ ensure that mongocryptd_ is used instead, even if a crypt_shared_ library would
 be available.
 
 As noted in `Path Resolution Behavior`_, crypt_shared_ can be "disabled" on a
-`libmongocrypt_handle` by omission:
+``libmongocrypt_handle`` by omission:
 
 1. Do not specify any `search paths`_,
 2. AND do not specify a crypt_shared_ library `override path`_
@@ -1663,26 +1663,26 @@ Loading crypt_shared_ Multiple Times
 
 Due to implementation restrictions, there must not be more than one
 crypt_shared_ dynamic library loaded simultaneously in a single operating system
-process. `libmongocrypt` will do its best to enforce this at the time that it
-loads crypt_shared_ while initializing a `libmongocrypt_handle`. `libmongocrypt`
+process. ``libmongocrypt`` will do its best to enforce this at the time that it
+loads crypt_shared_ while initializing a ``libmongocrypt_handle``. ``libmongocrypt``
 will keep track of the open crypt_shared_ library globally, and any subsequent
 attempt to use a crypt_shared_ library that does not exactly match the filepath
 of the already-loaded crypt_shared_ will result in an error.
 
-If at least one `libmongocrypt_handle` exists in an operating system process
+If at least one ``libmongocrypt_handle`` exists in an operating system process
 that has an open handle to a crypt_shared_ library, subsequent attempts to
-initialize an additional `libmongocrypt_handle` will fail if:
+initialize an additional ``libmongocrypt_handle`` will fail if:
 
-1. The new `libmongocrypt_handle` wants crypt_shared_ (i.e. at least one
+1. The new ``libmongocrypt_handle`` wants crypt_shared_ (i.e. at least one
    `search path`_ was specified or an `override path`_ was specified).
-2. AND the initialization of that `libmongocrypt_handle` does not successfully
+2. AND the initialization of that ``libmongocrypt_handle`` does not successfully
    find and load the same crypt_shared_ library that was loaded by the existing
-   `libmongocrypt_handle` that is already using crypt_shared_.
+   ``libmongocrypt_handle`` that is already using crypt_shared_.
 
 Drivers MUST document this limitation for users along with the documentation on
 the ``cryptShared*`` options in extraOptions_ by including the following:
 
-   All `MongoClient` objects in the same process should use the same setting for
+   All ``MongoClient`` objects in the same process should use the same setting for
    |opt-path-override|, as it is an error to load more that one crypt_shared_
    dynamic library simultaneously in a single operating system process.
 
@@ -1697,9 +1697,9 @@ Managing mongocryptd
 If the following conditions are met:
 
 - The user's ``MongoClient`` is configured for client-side encryption (i.e.
-  `bypassAutoEncryption` is not |false|)
-- **AND** the user has not disabled `mongocryptd` spawning (i.e. by setting
-  `extraOptions.mongocryptdBypassSpawn` to |true|),
+  ``bypassAutoEncryption`` is not |false|)
+- **AND** the user has not disabled ``mongocryptd`` spawning (i.e. by setting
+  ``extraOptions.mongocryptdBypassSpawn`` to |true|),
 - **AND** the crypt_shared_ library is unavailable (Refer:
   `Detecting crypt_shared Availability`_),
 - **AND** the |opt-crypt_shared-required| option is |false|.
@@ -1707,13 +1707,13 @@ If the following conditions are met:
 **then** ``mongocryptd`` MUST be spawned by the driver.
 
 If the |opt-crypt_shared-required| option is |true| then the driver MUST NOT attempt to
-spawn or connect to `mongocryptd`.
+spawn or connect to ``mongocryptd``.
 
 .. note::
 
    Since spawning mongocryptd_ requires checking whether crypt_shared_ is loaded, and
    checking whether crypt_shared_ is available can only be done *after* having
-   initialized the `libmongocrypt_handle`, drivers will need to defer spawning
+   initialized the ``libmongocrypt_handle``, drivers will need to defer spawning
    mongocryptd_ until *after* initializing libmongocrypt_ and checking for
    crypt_shared_.
 
@@ -1856,7 +1856,7 @@ splitting occurs relative to automatic encryption is implementation-dependent.
 
 Drivers MUST not reduce the size limits for a single write before automatic
 encryption. I.e. if a single document has size larger than 2MiB (but less than
-`maxBsonObjectSize`) proceed with automatic encryption.
+``maxBsonObjectSize``) proceed with automatic encryption.
 
 Drivers MUST document the performance limitation of enabling client side
 encryption by including the following documentation in MongoClient:
@@ -2419,7 +2419,7 @@ Why are serverSelectionTryOnce and cooldownMS disabled for single-threaded drive
 By default, single threaded clients set serverSelectionTryOnce to true, which
 means server selection fails if a topology scan fails the first time (i.e. it
 will not make repeat attempts until serverSelectionTimeoutMS expires). This
-behavior is overriden since there may be a small delay between spawning
+behavior is overridden since there may be a small delay between spawning
 mongocryptd (which the driver may be responsible for) and for mongocryptd to
 listen on sockets. See the Server Selection spec description of `serverSelectionTryOnce <../server-selection/server-selection.rst#serverselectiontryonce>`_.
 
@@ -2427,7 +2427,7 @@ Similarly, single threaded clients will by default wait for 5 second cooldown
 period after failing to connect to a server before making another attempt.
 Meaning if the first attempt to mongocryptd fails to connect, then the user
 would observe a 5 second delay. This is not configurable in the URI, so this
-must be overriden internally. Since mongocryptd is a local process, there should
+must be overridden internally. Since mongocryptd is a local process, there should
 only be a very short delay after spawning mongocryptd for it to start listening
 on sockets. See the SDAM spec description of `cooldownMS <../source/server-discovery-and-monitoring/server-discovery-and-monitoring.rst#cooldownms>`__.
 
@@ -2683,8 +2683,8 @@ with the key service.
 Remove mongocryptd
 ------------------
 A future version plans to remove the mongocryptd_ process and fold the logic
-into `libmongocrypt` using the crypt_shared_ library. Therefore, this spec mandates
-that drivers use `libmongocrypt` to abstract encryption logic, deduplicate work,
+into ``libmongocrypt`` using the crypt_shared_ library. Therefore, this spec mandates
+that drivers use ``libmongocrypt`` to abstract encryption logic, deduplicate work,
 and to provide a simpler future path to removing mongocryptd_.
 
 Support external key vault collection discovery
@@ -2739,7 +2739,7 @@ Changelog
 :2023-01-30: Return ``encryptedFields`` on ``CreateCollection`` error.
 :2023-01-26: Use GetEncryptedFields_ in more helpers.
 :2022-11-30: Add ``Range``.
-:2022-11-28: Permit `tlsDisableOCSPEndpointCheck` in KMS TLS options.
+:2022-11-28: Permit ``tlsDisableOCSPEndpointCheck`` in KMS TLS options.
 :2022-11-27: Fix typo for references to ``cryptSharedLibRequired`` option.
 :2022-11-10: Defined a ``CreateEncryptedCollection`` helper for creating new
              encryption keys automatically for the queryable encrypted fields in

@@ -157,14 +157,14 @@ When defining and documenting keys, specifications should follow the camelCase n
 Keys that aren't supported by a driver MUST be ignored. A WARN level logging message MUST be issued for unsupported keys. For example::
 
   Unsupported option 'connectMS'.
-  
+
 Keys should be descriptive and follow existing conventions:
 
 Time based keys
 ~~~~~~~~~~~~~~~
 If a key represents a unit of time it MUST end with that unit of time.
 
-Key authors SHOULD follow the existing convention of defaulting to using milliseconds as the unit of time (e.g. `connectionTimeoutMS`).
+Key authors SHOULD follow the existing convention of defaulting to using milliseconds as the unit of time (e.g. ``connectionTimeoutMS``).
 
 Values
 ------

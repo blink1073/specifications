@@ -45,7 +45,7 @@ executed when checking these constraints.
 - A server error with code 43 (``CursorNotFound``)
 
 - For servers with wire version 9 or higher (server version 4.4 or higher), any
-  server error with the `ResumableChangeStreamError` error label.
+  server error with the ``ResumableChangeStreamError`` error label.
 
 - For servers with wire version less than 9, a server error with one of the
   following codes:
@@ -130,20 +130,20 @@ If an aggregate command with a ``$changeStream`` stage completes successfully, t
      * MUST NOT err when they encounter a new `operationType`. Unknown `operationType`
      * values may be represented by "unknown" or the literal string value.
      */
-    operationType: "insert" 
-                  | "update" 
-                  | "replace" 
-                  | "delete" 
-                  | "invalidate" 
-                  | "drop" 
-                  | "dropDatabase" 
-                  | "rename" 
+    operationType: "insert"
+                  | "update"
+                  | "replace"
+                  | "delete"
+                  | "invalidate"
+                  | "drop"
+                  | "dropDatabase"
+                  | "rename"
                   | "createIndexes"
-                  | "dropIndexes" 
+                  | "dropIndexes"
                   | "modify"
-                  | "create" 
-                  | "shardCollection" 
-                  | "refineCollectionShardKey" 
+                  | "create"
+                  | "shardCollection"
+                  | "refineCollectionShardKey"
                   | "reshardCollection";
 
     /**
@@ -167,7 +167,7 @@ If an aggregate command with a ``$changeStream`` stage completes successfully, t
      * Only present when the `showExpandedEvents` change stream option is enabled.
      *
      * A description of the operation.
-     * 
+     *
      * @since 6.0.0
      */
     operationDescription: Optional<Document>
@@ -226,7 +226,7 @@ If an aggregate command with a ``$changeStream`` stage completes successfully, t
 
     /**
      * The `ui` field from the oplog entry corresponding to the change event.
-     * 
+     *
      * Only present when the `showExpandedEvents` change stream option is enabled and for the following events
      *  - 'insert'
      *  - 'update'
@@ -239,9 +239,9 @@ If an aggregate command with a ``$changeStream`` stage completes successfully, t
      *  - 'shardCollection'
      *  - 'reshardCollection'
      *  - 'refineCollectionShardKey'
-     *  
+     *
      * This field is a value of binary subtype 4 (UUID).
-     *  
+     *
      * @since 6.0.0
      */
     collectionUUID: Optional<Binary>;
@@ -309,20 +309,20 @@ If an aggregate command with a ``$changeStream`` stage completes successfully, t
 
     /**
      * A document containing a map that associates an update path to an array containing the path components used in the update document. This data
-     * can be used in combination with the other fields in an `UpdateDescription` to determine the actual path in the document that was updated. This is 
+     * can be used in combination with the other fields in an `UpdateDescription` to determine the actual path in the document that was updated. This is
      * necessary in cases where a key contains dot-separated strings (i.e., `{ "a.b": "c" }`) or a document contains a numeric literal string key
-     * (i.e., `{ "a": { "0": "a" } }`. Note that in this scenario, the numeric key can't be the top level key, because `{ "0": "a" }` is not ambiguous - 
+     * (i.e., `{ "a": { "0": "a" } }`. Note that in this scenario, the numeric key can't be the top level key, because `{ "0": "a" }` is not ambiguous -
      * update paths would simply be `'0'` which is unambiguous because BSON documents cannot have arrays at the top level.).
-     * 
-     * Each entry in the document maps an update path to an array which contains the actual path used when the document was updated.  
+     *
+     * Each entry in the document maps an update path to an array which contains the actual path used when the document was updated.
      * For example, given a document with the following shape `{ "a": { "0": 0 } }` and an update of `{ $inc: { "a.0": 1 } }`, `disambiguatedPaths` would
      * look like the following:
      *   {
      *      "a.0": ["a", "0"]
      *   }
-     * 
+     *
      * In each array, all elements will be returned as strings with the exception of array indices, which will be returned as 32 bit integers.
-     * 
+     *
      * @since 6.1.0
      */
     disambiguatedPaths: Optional<Document>
@@ -569,10 +569,10 @@ Driver API
      * - shardCollection
      * - reshardCollection
      * - refineCollectionShardKey
-     * 
+     *
      * This flag is available in server versions greater than 6.0.0. `reshardCollection` and
      * `refineCollectionShardKey` events are not available until server version 6.1.0.
-     * 
+     *
      * @note this is an option of the change stream pipeline stage
      */
     showExpandedEvents: Optional<Boolean>
@@ -597,7 +597,7 @@ The stage has the following shape:
 
 The first parameter of the helpers specifies an array of aggregation pipeline stages which MUST be appended to the initial stage. Drivers MUST support an empty pipeline. Languages which support default parameters MAY specify an empty array as the default value for this parameter. Drivers SHOULD otherwise make specification of a pipeline as similar as possible to the `aggregate <https://github.com/mongodb/specifications/blob/master/source/crud/crud.rst#read>`_ CRUD method.
 
-Additionally, implementors MAY provide a form of these methods which require no parameters, assuming no options and no additional stages beyond the initial ``$changeStream`` stage:
+Additionally, implementers MAY provide a form of these methods which require no parameters, assuming no options and no additional stages beyond the initial ``$changeStream`` stage:
 
 .. code:: python
 
@@ -616,7 +616,7 @@ A driver MUST NOT throw an exception if any unsupported stage is provided, but i
 
 A driver MUST NOT throw an exception if a user adds, removes, or modifies fields using ``$project``. The server will produce an error if ``_id``
 is projected out, but a user should otherwise be able to modify the shape of the change stream event as desired. This may require the result
-to be deserialized to a ``BsonDocument`` or custom-defined type rather than a ``ChangeStreamDocument``. It is the responsiblity of the
+to be deserialized to a ``BsonDocument`` or custom-defined type rather than a ``ChangeStreamDocument``. It is the responsibility of the
 user to ensure that the deserialized type is compatible with the specified ``$project`` stage.
 
 The aggregate helper methods MUST have no new logic related to the ``$changeStream`` stage. Drivers MUST be capable of handling `TAILABLE_AWAIT <https://github.com/mongodb/specifications/blob/master/source/crud/crud.rst#read>`_  cursors from the aggregate command in the same way they handle such cursors from find.
@@ -672,14 +672,14 @@ Command syntax:
       ...
     }
 
-The helper MUST run the command against the `admin` database
+The helper MUST run the command against the ``admin`` database
 
 Drivers MUST use the ``ns`` returned in the ``aggregate`` command to set the ``collection`` option in subsequent ``getMore`` commands.
 
 ChangeStream
 ------------
 
-A ``ChangeStream`` is an abstraction of a `TAILABLE_AWAIT <https://github.com/mongodb/specifications/blob/master/source/crud/crud.rst#read>`_ cursor, with support for resumability.  Implementors MAY choose to implement a ``ChangeStream`` as an extension of an existing tailable cursor implementation.  If the ``ChangeStream`` is implemented as a type which owns a tailable cursor, then the implementor MUST provide a manner of closing the change stream, as well as satisfy the requirements of extending ``Iterable<Document>``. If your language has an idiomatic way of disposing of resources you MAY choose to implement that in addition to, or instead of, an explicit close method.
+A ``ChangeStream`` is an abstraction of a `TAILABLE_AWAIT <https://github.com/mongodb/specifications/blob/master/source/crud/crud.rst#read>`_ cursor, with support for resumability.  Implementers MAY choose to implement a ``ChangeStream`` as an extension of an existing tailable cursor implementation.  If the ``ChangeStream`` is implemented as a type which owns a tailable cursor, then the implementer MUST provide a manner of closing the change stream, as well as satisfy the requirements of extending ``Iterable<Document>``. If your language has an idiomatic way of disposing of resources you MAY choose to implement that in addition to, or instead of, an explicit close method.
 
 A change stream MUST track the last resume token, per `Updating the Cached Resume Token`_.
 
@@ -705,7 +705,7 @@ The server expects ``startAtOperationTime`` as a BSON Timestamp. Drivers MUST al
 
 ``startAtOperationTime``, ``resumeAfter``, and ``startAfter`` are all mutually exclusive; if any two are set, the server will return an error. Drivers MUST NOT throw a custom error, and MUST defer to the server error.
 
-The ``ChangeStream`` MUST save the ``operationTime`` from the initial ``aggregate`` response when the following critera are met:
+The ``ChangeStream`` MUST save the ``operationTime`` from the initial ``aggregate`` response when the following criteria are met:
 
 - None of ``startAtOperationTime``,  ``resumeAfter``, ``startAfter`` were specified in the ``ChangeStreamOptions``.
 - The max wire version is >= ``7``.
@@ -841,7 +841,7 @@ Drivers MUST apply timeouts to change stream establishment, iteration, and resum
 Notes and Restrictions
 ^^^^^^^^^^^^^^^^^^^^^^
 
-**1. `fullDocument: updateLookup` can result in change documents larger than 16 MiB**
+**1. ``fullDocument: updateLookup`` can result in change documents larger than 16 MiB**
 
 There is a risk that if there is a large change to a large document, the full document and delta might result in a document larger than the 16 MiB limitation on BSON documents.  If that happens the cursor will be closed, and a server error will be returned.
 
@@ -1031,7 +1031,7 @@ Changelog
              patterns instead of a method.
 :2019-06-20: Fix server version for addition of ``postBatchResumeToken``.
 :2019-04-12: Clarify caching process for resume token.
-:2019-04-03: Update the lowest server version that supports 
+:2019-04-03: Update the lowest server version that supports
              ``postBatchResumeToken``.
 :2019-01-10: Clarify error handling for killing the cursor.
 :2018-11-06: Add handling of ``postBatchResumeToken``.

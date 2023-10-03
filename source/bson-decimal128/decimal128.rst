@@ -52,7 +52,7 @@ interpreted as described in `RFC 2119 <https://www.ietf.org/rfc/rfc2119.txt>`_.
 Terminology
 ===========
 
-IEEE 754-2008 128-bit decimal floating point (Decimal128): 
+IEEE 754-2008 128-bit decimal floating point (Decimal128):
    The Decimal128 specification supports 34 decimal digits of precision, a max
    value of approximately ``10^6145``, and min value of approximately
    ``-10^6145``. This is the new ``BSON Decimal128`` type (``"\x13"``).
@@ -92,8 +92,8 @@ exceptions around value integrity and the coefficient encoding.  When a value
 cannot be represented exactly, the value will be rejected.
 
 The coefficient MUST be stored as an unsigned binary integer (BID) rather than
-the densely-packed decimal (DPD) shown in the specification. See either the 
-`IEEE Std 754-2008` spec or the driver examples for further detail.
+the densely-packed decimal (DPD) shown in the specification. See either the
+``IEEE Std 754-2008`` spec or the driver examples for further detail.
 
 The specification defines several statuses which are meant to signal
 exceptional `circumstances <http://speleotrove.com/decimal/daexcep.html>`_,
@@ -221,15 +221,15 @@ for a different NaN representation and whitespace rules and copied here::
     Strings which are acceptable for conversion to the abstract representation of
     numbers, or which might result from conversion from the abstract representation
     to a string, are called numeric strings.
-    
-    
+
+
     A numeric string is a character string that describes either a finite
     number or a special value.
     * If it describes a finite number, it includes one or more decimal digits,
       with an optional decimal point. The decimal point may be embedded in the
       digits, or may be prefixed or suffixed to them. The group of digits (and
       optional point) thus constructed may have an optional sign (‘+’ or ‘-’)
-      which must come before any digits or decimal point. 
+      which must come before any digits or decimal point.
     * The string thus described may optionally be followed by an ‘E’
       (indicating an exponential part), an optional sign, and an integer
       following the sign that represents a power of ten that is to be applied.
@@ -237,11 +237,11 @@ for a different NaN representation and whitespace rules and copied here::
     * If it describes a special value, it is one of the case-independent names
       ‘Infinity’, ‘Inf’, or ‘NaN’ (where the first two represent infinity and
       the second represent NaN). The name may be preceded by an optional sign,
-      as for finite numbers. 
+      as for finite numbers.
     * No blanks or other whitespace characters are permitted in a numeric string.
-    
+
     Formally
-    
+
               sign           ::=  ’+’ | ’-’
               digit          ::=  ’0’ | ’1’ | ’2’ | ’3’ | ’4’ | ’5’ | ’6’ | ’7’ |
                                   ’8’ | ’9’
@@ -253,7 +253,7 @@ for a different NaN representation and whitespace rules and copied here::
               nan            ::=  ’NaN’
               numeric-value  ::=  decimal-part [exponent-part] | infinity
               numeric-string ::=  [sign] numeric-value | [sign] nan
-    
+
     where the characters in the strings accepted for ‘infinity’ and ‘nan’ may be in
     any case.  If an implementation supports the concept of diagnostic information
     on NaNs, the numeric strings for NaNs MAY include one or more digits, as shown
@@ -262,13 +262,13 @@ for a different NaN representation and whitespace rules and copied here::
     diagnostic NaNs should be reversible if possible. If an implementation does not
     support diagnostic information on NaNs, these digits should be ignored where
     necessary. A plain ‘NaN’ is usually the same as ‘NaN0’.
-    
+
 
     Drivers MAY choose to support signed NaN (sNaN), along with sNaN with
-    diagnostic information. 
-    
-    
-    
+    diagnostic information.
+
+
+
     Examples::
     Some numeric strings are:
                 "0"         -- zero
@@ -283,7 +283,7 @@ for a different NaN representation and whitespace rules and copied here::
                "Inf"        -- the same as Infinity
                "-infinity"  -- the same as -Infinity
                "NaN"        -- not-a-Number
-    
+
     Notes:
     1. A single period alone or with a sign is not a valid numeric string.
     2. A sign alone is not a valid numeric string.
@@ -302,14 +302,14 @@ http://speleotrove.com/decimal/daconvs.html. It has been copied here::
     The coefficient is first converted to a string in base ten using the characters
     0 through 9 with no leading zeros (except if its value is zero, in which case a
     single 0 character is used).
-    
-    
+
+
     Next, the adjusted exponent is calculated; this is the exponent, plus the
     number of characters in the converted coefficient, less one. That is,
     exponent+(clength-1), where clength is the length of the coefficient in decimal
     digits.
-    
-    
+
+
     If the exponent is less than or equal to zero and the adjusted exponent is
     greater than or equal to -6, the number will be converted to a character form
     without using exponential notation. In this case, if the exponent is zero then
@@ -319,8 +319,8 @@ http://speleotrove.com/decimal/daconvs.html. It has been copied here::
     added to the left of the converted coefficient as necessary. If no character
     precedes the decimal point after this insertion then a conventional ‘0’
     character is prefixed.
-    
-    
+
+
     Otherwise (that is, if the exponent is positive, or the adjusted exponent is
     less than -6), the number will be converted to a character form using
     exponential notation. In this case, if the converted coefficient has more than
@@ -330,7 +330,7 @@ http://speleotrove.com/decimal/daconvs.html. It has been copied here::
     the adjusted exponent converted to a character form. The latter is in base ten,
     using the characters 0 through 9 with no leading zeros, always prefixed by a
     sign character (‘-’ if the calculated exponent is negative, ‘+’ otherwise).
-    
+
 
 This corresponds to the following code snippet:
 
@@ -434,7 +434,7 @@ Q&A
      precision is represented exactly. For example, ‘2.00’ always remains
      stored as 200E-2 in Decimal128, and it differs from the representation of
      ‘2.0’ (20E-1). These two values compare equally, but represent different
-     ideas. 
+     ideas.
 * How does Decimal128 "2.000" look in the shell?
    * NumberDecimal("2.000")
 * Should a driver avoid sending Decimal128 values to pre-3.4 servers?

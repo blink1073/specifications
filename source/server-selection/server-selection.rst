@@ -699,7 +699,7 @@ the command and how it is invoked:
     preference, e.g.  not calling ``renameCollection`` with a ``mode`` of
     'secondary'.
 
-    N.B.: "used for server selection" does not supercede rules for server
+    N.B.: "used for server selection" does not supersede rules for server
     selection on "Standalone" topologies, which ignore any requested read
     preference.
 
@@ -872,7 +872,7 @@ For multi-threaded clients, the server selection algorithm is as follows:
    until the topology changes or until the server selection timeout has elapsed
 
 10. If server selection has timed out, raise a `server selection error`_ and log
-    a `"Server selection failed" message`_. 
+    a `"Server selection failed" message`_.
 
 11. Goto Step #2
 
@@ -1302,7 +1302,7 @@ This message MUST contain the following key-value pairs:
    * - serverPort
      - Int
      - The port for the selected server. Optional; not present for Unix domain sockets. When
-       the user does not specify a port and the default (27017) is used, the driver SHOULD include it here. 
+       the user does not specify a port and the default (27017) is used, the driver SHOULD include it here.
 
 The unstructured form SHOULD be as follows, using the values defined in the structured format above to
 fill in placeholders as appropriate:
@@ -1343,7 +1343,7 @@ This message MUST contain the following key-value pairs:
 The unstructured form SHOULD be as follows, using the values defined in the structured format above to
 fill in placeholders as appropriate:
 
-  Server selection failed for operation {{operationName}} with ID {{operationId}}. Failure: {{failure}}. 
+  Server selection failed for operation {{operationName}} with ID {{operationId}}. Failure: {{failure}}.
   Selector: {{selector}}, topology description: {{topologyDescription}}
 
 "Waiting for suitable server to become available" message
@@ -1361,7 +1361,7 @@ only values that can change over time are:
   the time remaining can always be inferred from the original message.
 - The topology description: rather than logging these changes on a per-operation basis, users
   should observe them with a single set of messages for the entire client via SDAM log messages.
-  
+
 
 This message MUST contain the following key-value pairs:
 
@@ -1380,7 +1380,7 @@ This message MUST contain the following key-value pairs:
    * - remainingTimeMS
      - Int
      - The remaining time left until server selection will time out. This MAY be omitted if
-       the driver supports disabling server selection timeout altogether. 
+       the driver supports disabling server selection timeout altogether.
 
 The unstructured form SHOULD be as follows, using the values defined in the structured format above to
 fill in placeholders as appropriate:
@@ -1497,7 +1497,7 @@ selection`_::
                 return selected
 
             request that all monitors check immediately
-            if the message was not logged already for this operation: 
+            if the message was not logged already for this operation:
                 log a "waiting for suitable server to become available" message
 
             # Wait for a new TopologyDescription. condition.wait() releases
@@ -1581,7 +1581,7 @@ The following is pseudocode for `single-threaded server selection`_::
             else if loopEndTime > maxTime:
                 throw server selection error with details
 
-            if the message was not logged already: 
+            if the message was not logged already:
                 log a "waiting for suitable server to become available" message
 
 .. _server selection error:
@@ -1830,13 +1830,13 @@ process must throw an error until all have discovered that a server is down.
 The compromise specified here balances the cost of frequent checks against the
 disruption of many errors. The client preemptively checks individual sockets
 that have not been used in the last `socketCheckIntervalMS`_, which is more
-frequent by default than `heartbeatFrequencyMS` defined in the Server Discovery
+frequent by default than ``heartbeatFrequencyMS`` defined in the Server Discovery
 and Monitoring Spec.
 
 The client checks the socket with a "ping" command, rather than "hello" or legacy
 hello, because it is not checking the server's full state as in the Server Discovery
 and Monitoring Spec, it is only verifying that the connection is still open. We
-might also consider a `select` or `poll` call to check if the socket layer
+might also consider a ``select`` or ``poll`` call to check if the socket layer
 considers the socket closed, without requiring a round-trip to the server.
 However, this technique usually will not detect an uncleanly shutdown server or
 a network outage.
@@ -1927,7 +1927,7 @@ accordingly.
 .. _SERVER-11956: https://jira.mongodb.org/browse/SERVER-11956
 .. _SERVER-12273: https://jira.mongodb.org/browse/SERVER-12273
 
-Why change from mongos High Availablity (HA) to random selection?
+Why change from mongos High Availability (HA) to random selection?
 ---------------------------------------------------------------------
 
 Mongos HA has similar problems with pinning, in that one can wind up pinned
@@ -1993,14 +1993,14 @@ know whether to fall back or not, we must first filter by all other criteria.
 
 Say you have two secondaries:
 
-  - Node 1, tagged `{'tag': 'value1'}`, estimated staleness 5 minutes
-  - Node 2, tagged `{'tag': 'value2'}`, estimated staleness 1 minute
+  - Node 1, tagged ``{'tag': 'value1'}``, estimated staleness 5 minutes
+  - Node 2, tagged ``{'tag': 'value2'}``, estimated staleness 1 minute
 
 And a read preference:
 
   - mode: "secondary"
   - maxStalenessSeconds: 120 (2 minutes)
-  - tag_sets: `[{'tag': 'value1'}, {'tag': 'value2'}]`
+  - tag_sets: ``[{'tag': 'value1'}, {'tag': 'value2'}]``
 
 If tag sets were applied before maxStalenessSeconds, we would select Node 1 since it
 matches the first tag set, then filter it out because it is too stale, and be

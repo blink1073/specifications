@@ -14,7 +14,7 @@ There are 6 scenarios drivers MUST test:
 
 For brevity, this section gives the values ``<AccessKeyId>``, ``<SecretAccessKey>`` and ``<Token>`` in place of a valid access key ID, secret access key and session token (also known as a security token). Note that if these values are passed into the URI they MUST be URL encoded. Sample values are below.
 
-.. code-block:: 
+.. code-block::
 
   AccessKeyId=AKIAI44QH8DHBEXAMPLE
   SecretAccessKey=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
@@ -27,7 +27,7 @@ Regular credentials
 
 Drivers MUST be able to authenticate by providing a valid access key id and secret access key pair as the username and password, respectively, in the MongoDB URI. An example of a valid URI would be:
 
-.. code-block:: 
+.. code-block::
 
   mongodb://<AccessKeyId>:<SecretAccessKey>@localhost/?authMechanism=MONGODB-AWS
 
@@ -37,7 +37,7 @@ EC2 Credentials
 Drivers MUST be able to authenticate from an EC2 instance via temporary credentials assigned to the machine. A sample URI on an EC2 machine would be:
 
 .. code-block::
-  
+
   mongodb://localhost/?authMechanism=MONGODB-AWS
 
 .. note:: No username, password or session token is passed into the URI. Drivers MUST query the EC2 instance endpoint to obtain these credentials.
@@ -56,7 +56,7 @@ Drivers MUST be able to authenticate from an ECS container via temporary credent
 AssumeRole
 ==========
 
-Drivers MUST be able to authenticate using temporary credentials returned from an assume role request. These temporary credentials consist of an access key ID, a secret access key, and a security token passed into the URI. A sample URI would be: 
+Drivers MUST be able to authenticate using temporary credentials returned from an assume role request. These temporary credentials consist of an access key ID, a secret access key, and a security token passed into the URI. A sample URI would be:
 
 .. code-block::
 
@@ -69,6 +69,7 @@ Drivers MUST be able to authentiate using a valid OIDC token and associated
 role ARN taken from environment variables, respectively:
 
 .. code-block::
+
   AWS_WEB_IDENTITY_TOKEN_FILE
   AWS_ROLE_ARN
   AWS_ROLE_SESSION_NAME (optional)
@@ -82,18 +83,19 @@ A sample URI in for a web identity test would be:
 Drivers MUST test with and without AWS_ROLE_SESSION_NAME set.
 
 .. note:: No username, password or session token is passed into the URI.
+
 Drivers MUST check the environment variables listed above and make an `AssumeRoleWithWebIdentity request <https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRoleWithWebIdentity.html>`_ to obtain
 credentials.
 
 AWS Lambda
 ==========
 
-Drivers MUST be able to authenticate via an access key ID, secret access key and optional session token taken from the environment variables, respectively: 
+Drivers MUST be able to authenticate via an access key ID, secret access key and optional session token taken from the environment variables, respectively:
 
 .. code-block::
 
   AWS_ACCESS_KEY_ID
-  AWS_SECRET_ACCESS_KEY 
+  AWS_SECRET_ACCESS_KEY
   AWS_SESSION_TOKEN
 
 Sample URIs both with and without optional session tokens set are shown below. Drivers MUST test both cases.

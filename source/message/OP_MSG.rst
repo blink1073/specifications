@@ -123,7 +123,7 @@ Each ``OP_MSG`` MUST have one section with ``Payload Type 0``, and zero or more
 when the batch contains more than one entry.
 
 Sections may exist in any order. Each ``OP_MSG`` MAY contain a checksum, and
-MUST set the relevant `flagBits` when that field is included.
+MUST set the relevant ``flagBits`` when that field is included.
 
 
 ==================== ========================================================
@@ -165,20 +165,20 @@ and MUST ignore all undefined optional bits.
 
 The currently defined flags are:
 
-===== ==================== ========= ========== =========================== 
+===== ==================== ========= ========== ===========================
 Bit   Name                 Request   Response   Description
------ -------------------- --------- ---------- --------------------------- 
+----- -------------------- --------- ---------- ---------------------------
 0     checksumPresent         x         x       Checksum present
------ -------------------- --------- ---------- --------------------------- 
+----- -------------------- --------- ---------- ---------------------------
 1     moreToCome              x         x       Sender will send another
                                                 message and is not prepared
                                                 for overlapping messages
------ -------------------- --------- ---------- --------------------------- 
+----- -------------------- --------- ---------- ---------------------------
 16    exhaustAllowed          x                 Client is prepared for
                                                 multiple replies (using the
                                                 moreToCome bit) to this
                                                 request
-===== ==================== ========= ========== =========================== 
+===== ==================== ========= ========== ===========================
 
 
 checksumPresent
@@ -269,14 +269,14 @@ payload size for payload type 0 and 1 is determined by the first 4 bytes of
 the payload field (includes the 4 bytes holding the size but not the payload type).
 
 
-========= ================================================================= 
+========= =================================================================
 Field     Description
---------- ----------------------------------------------------------------- 
+--------- -----------------------------------------------------------------
 type      A byte indicating the layout and semantics of payload
---------- ----------------------------------------------------------------- 
-payload   The payload of a section can either be a single document, or a 
+--------- -----------------------------------------------------------------
+payload   The payload of a section can either be a single document, or a
           document sequence.
-========= ================================================================= 
+========= =================================================================
 
 .. This RST artwork improves the readability of the rendered document
 
@@ -284,24 +284,24 @@ payload   The payload of a section can either be a single document, or a
 |
 |
 
-============ ============================================================== 
+============ ==============================================================
 Field        Description
-============ ============================================================== 
+============ ==============================================================
 When the Payload Type is 0, the content of the payload is
---------------------------------------------------------------------------- 
+---------------------------------------------------------------------------
 document     The BSON document. The payload size is inferred from the
              document's leading int32.
------------- -------------------------------------------------------------- 
+------------ --------------------------------------------------------------
 When the Payload Type is 1, the content of the payload is
---------------------------------------------------------------------------- 
+---------------------------------------------------------------------------
 size         Payload size (includes this 4-byte field)
------------- -------------------------------------------------------------- 
+------------ --------------------------------------------------------------
 identifier   A unique identifier (for this message). Generally the name of
              the "command argument" it contains the value for
------------- -------------------------------------------------------------- 
+------------ --------------------------------------------------------------
 documents    0 or more BSON documents. Each BSON document cannot be larger
              than ``maxBSONObjectSize``.
-============ ============================================================== 
+============ ==============================================================
 
 
 Any unknown Payload Types MUST result in an error and the socket MUST be
@@ -323,7 +323,7 @@ Command Arguments As Payload
 ----------------------------
 
 Certain commands support "pulling out" certain arguments to the command, and
-providing them as ``Payload Type 1``, where the `identifier` is the command
+providing them as ``Payload Type 1``, where the ``identifier`` is the command
 argument’s name.
 Specifying a command argument as a separate payload removes the need to use a
 BSON Array. For example, ``Payload Type 1`` allows an array of documents to be
@@ -333,15 +333,15 @@ array keys.
 MongoDB 3.6 only allows certain command arguments to be provided this way.
 These are:
 
-============== ============================================================ 
+============== ============================================================
 Command Name   Command Argument
-============== ============================================================ 
+============== ============================================================
 insert         documents
--------------- ------------------------------------------------------------ 
+-------------- ------------------------------------------------------------
 update         updates
--------------- ------------------------------------------------------------ 
+-------------- ------------------------------------------------------------
 delete         deletes
-============== ============================================================ 
+============== ============================================================
 
 
 
@@ -397,7 +397,7 @@ User originating commands
 
 Drivers MUST NOT mutate user provided command documents in any way, whether it
 is adding required arguments, pulling out arguments, compressing it, adding
-supplemental APM data or any other modification. 
+supplemental APM data or any other modification.
 
 .. This RST artwork improves the readability of the rendered document
 
@@ -543,7 +543,7 @@ each current opcode has, such as having to determine what sort of node is on
 the other end as it affects the actual structure of certain messages.
 MongoDB 3.6 introduces a new wire protocol opcode, ``OP_MSG``, which aims to
 resolve most historical issues along with providing a future compatible and
-extendable opcode. 
+extendable opcode.
 
 
 Backwards Compatibility

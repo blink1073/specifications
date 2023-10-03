@@ -47,7 +47,7 @@ The documentation provided in code below is merely for driver authors and SHOULD
 Messages and Events
 -------------------
 
-All drivers MUST implement the specified event types as well as log messages. 
+All drivers MUST implement the specified event types as well as log messages.
 
 Implementation details are noted in the comments when a specific implementation is required. Within each event and log message, all properties are REQUIRED unless noted otherwise.
 
@@ -62,7 +62,7 @@ Publishing & Subscribing
 
 The driver SHOULD publish events in a manner that is standard to the driver's language publish/subscribe patterns and is not strictly mandated in this specification.
 
-Similarly, as described in the `logging specification <../logging/logging.rst#implementation-requirements>`_ the driver SHOULD emit log messages in a manner that is standard for the language.
+Similarly, as described in the `logging specification <../logging/logging.rst#implementation-requirements>`__ the driver SHOULD emit log messages in a manner that is standard for the language.
 
 
 Guarantees
@@ -85,7 +85,7 @@ Succeeded or Failed
 -------------------
 
 Commands that executed on the server and return a status of ``{ ok: 1.0 }`` are considered
-successful commands and MUST generate a ``CommandSucceededEvent`` and "command succeeded" log message. 
+successful commands and MUST generate a ``CommandSucceededEvent`` and "command succeeded" log message.
 Commands that have write errors are included since the actual command did succeed, only writes failed.
 
 Error Handling
@@ -124,8 +124,8 @@ The command listener API is responsible only for receiving and handling events s
 level of the driver, and is only about informing listeners about what commands are sent and what
 replies are received. As such, it would be innappropiate at this level for a driver to execute
 custom logic around particular commands to determine what failure or success means for a particular
-command. Implementators of the API are free to handle these events as they see fit, which may include
-code that futher interprets replies to specific commands based on the presence or absence of other
+command. Implementers of the API are free to handle these events as they see fit, which may include
+code that further interprets replies to specific commands based on the presence or absence of other
 fields in the reply beyond the ``ok`` field.
 
 *2. Why are document sequences included as BSON arrays?*
@@ -152,9 +152,9 @@ Some commands and replies will contain sensitive data relating to authentication
 
 In order to not risk leaking this data to external sources or logs, for these commands:
 
-- The "command" field in ``CommandStartedEvent`` and "command started" log messages MUST 
+- The "command" field in ``CommandStartedEvent`` and "command started" log messages MUST
   be replaced with an empty BSON document.
-- The "reply" field in ``CommandSucceededEvent`` and "command succeeded" log messages MUST 
+- The "reply" field in ``CommandSucceededEvent`` and "command succeeded" log messages MUST
   be replaced with an empty BSON document.
 - If the error is a server-side error, the "failure" field in ``CommandFailedEvent`` and
   "command failed" log messages MUST have all fields besides the following redacted:
@@ -369,7 +369,7 @@ See the `Load Balancer Specification <../load-balancers/load-balancers.rst#event
 ------------
 Log Messages
 ------------
-Please refer to the `logging specification <../logging/logging.rst>`_ for details on logging implementations in general, including log levels, log
+Please refer to the `logging specification <../logging/logging.rst>`__ for details on logging implementations in general, including log levels, log
 components, and structured versus unstructured logging.
 
 Drivers MUST support logging of command information via the following types of log messages. These messages MUST be logged at ``Debug`` level and use
@@ -381,7 +381,7 @@ support via an event subscriber if it is convenient to do so.
 The types used in the structured message definitions below are demonstrative, and drivers MAY use similar types instead so long as the information
 is present (e.g. a double instead of an integer, or a string instead of an integer if the structured logging framework does not support numeric types.)
 
-Drivers MUST not emit command log messages for commands issued as part of the handshake with the server, or heartbeat commands issued by server monitors. 
+Drivers MUST not emit command log messages for commands issued as part of the handshake with the server, or heartbeat commands issued by server monitors.
 
 Common Fields
 -------------
@@ -406,10 +406,10 @@ The following key-value pairs MUST be included in all command messages:
    * - requestId
      - Int
      - The driver-generated request ID.
-  
+
    * - operationId
      - Int
-     - The driver-generated operation ID. Optional; only present if the driver generated operation IDs and this command has one. 
+     - The driver-generated operation ID. Optional; only present if the driver generated operation IDs and this command has one.
 
    * - driverConnectionId
      - Int64
@@ -426,7 +426,7 @@ The following key-value pairs MUST be included in all command messages:
    * - serverPort
      - Int
      - The port for the server the command is being run on. Optional; not present for Unix domain sockets. When
-       the user does not specify a port and the default (27017) is used, the driver SHOULD include it here. 
+       the user does not specify a port and the default (27017) is used, the driver SHOULD include it here.
 
    * - serverConnectionId
      - Int64
@@ -456,8 +456,8 @@ In addition to the common fields, command started messages MUST contain the foll
 
    * - command
      - String
-     - Relaxed extJSON representation of the command. This document MUST be truncated appropriately according to rules defined in the 
-       `logging specification <../logging/logging.rst#configurable-max-document-length>`_, and MUST be replaced with an empty document
+     - Relaxed extJSON representation of the command. This document MUST be truncated appropriately according to rules defined in the
+       `logging specification <../logging/logging.rst#configurable-max-document-length>`__, and MUST be replaced with an empty document
        "{ }" if the command is considered sensitive.
 
 The unstructured form SHOULD be as follows, using the values defined in the structured format above to fill in placeholders as appropriate:
@@ -489,13 +489,13 @@ In addition to the common fields, command succeeded messages MUST contain the fo
 
    * - reply
      - String
-     - Relaxed extJSON representation of the reply. This document MUST be truncated appropriately according to rules defined in the 
-       `logging specification <../logging/logging.rst#configurable-max-document-length>`_, and MUST be replaced with an empty document
+     - Relaxed extJSON representation of the reply. This document MUST be truncated appropriately according to rules defined in the
+       `logging specification <../logging/logging.rst#configurable-max-document-length>`__, and MUST be replaced with an empty document
        "{ }" if the command is considered sensitive.
 
 The unstructured form SHOULD be as follows, using the values defined in the structured format above to fill in placeholders as appropriate:
 
-  Command "{{commandName}}" succeeded on database "{{databaseName}}" in {{durationMS}} ms using a connection with driver-generated ID {{driverConnectionId}} and 
+  Command "{{commandName}}" succeeded on database "{{databaseName}}" in {{durationMS}} ms using a connection with driver-generated ID {{driverConnectionId}} and
   server-generated ID {{serverConnectionId}} to {{serverHost}}:{{serverPort}} with service ID {{serviceId}}. The requestID is
   {{requestId}} and the operation ID is {{operationId}}. Command reply: {{command}}
 
@@ -522,8 +522,8 @@ In addition to the common fields, command failed messages MUST contain the follo
 
    * - failure
      - Flexible
-     - The error. The type and format of this value is flexible; see the `logging specification <../logging/logging.rst#representing-errors-in-log-messages>`_ 
-       for details on representing errors in log messages. If the command is considered sensitive, the error MUST be redacted and replaced with a 
+     - The error. The type and format of this value is flexible; see the `logging specification <../logging/logging.rst#representing-errors-in-log-messages>`__
+       for details on representing errors in log messages. If the command is considered sensitive, the error MUST be redacted and replaced with a
        language-appropriate alternative for a redacted error, e.g. an empty string, empty document, or null.
 
 The unstructured form SHOULD be as follows, using the values defined in the structured format above to fill in placeholders as appropriate:

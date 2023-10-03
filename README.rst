@@ -15,10 +15,10 @@ following principles:
 Strive to be idiomatic, but favor consistency
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Drivers attempt to provide the easiest way to work with MongoDB in a given 
-language ecosystem, while specifications attempt to provide a consistent 
-behavior and experience across all languages. Drivers should strive to be as 
-idiomatic as possible while meeting the specification and staying true to the 
+Drivers attempt to provide the easiest way to work with MongoDB in a given
+language ecosystem, while specifications attempt to provide a consistent
+behavior and experience across all languages. Drivers should strive to be as
+idiomatic as possible while meeting the specification and staying true to the
 original intent.
 
 No Knobs
@@ -111,6 +111,29 @@ Documentation Style Guidelines <https://www.mongodb.com/docs/meta/style-guide/>`
 Store all source documents in the ``source/`` directory.
 
 .. _`reStructuredText`: http://docutils.sourceforge.net/rst.html
+
+Linting
+-------
+
+This repo uses `pre-commit <https://pypi.org/project/pre-commit/>`_
+for managing linting.
+``pre-commit`` performs various checks on the files and uses tools
+that help follow a consistent style within the repo.
+
+To set up ``pre-commit`` locally, run:
+
+.. code:: bash
+
+    pip install pre-commit  # or brew install pre-commit
+    pre-commit install
+
+To run ``pre-commit`` manually, run ``pre-commit run --all-files``.
+
+To run a manual hook like ``rstcheck`` manually, run:
+
+.. code:: bash
+
+    pre-commit run --all-files --hook-stage manual rstcheck
 
 Prose test numbering
 --------------------

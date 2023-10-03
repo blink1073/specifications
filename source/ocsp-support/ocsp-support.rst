@@ -227,7 +227,7 @@ option MUST default to false.
 If a driver does not support ``tlsDisableOCSPEndpointCheck`` and
 that driver fails the "Soft Fail Test" because their TLS
 library exhibits hard-fail behavior when a responder is unreachable,
-then that driver must default `tlsDisableCertificateRevocationCheck` to
+then that driver must default ``tlsDisableCertificateRevocationCheck`` to
 true. Such a driver also MUST document this behavior. If this
 hard-failure behavior is specific to a particular platform (e.g. the
 TLS library hard-fails only on Windows) then this option MUST default

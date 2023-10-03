@@ -46,7 +46,7 @@ A response is a pair of values:
 - A hello or legacy hello response, for example ``{ok: 1, helloOk: true, isWritablePrimary: true}``.
   If the response includes an electionId it is shown in extended JSON like
   ``{"$oid": "000000000000000000000002"}``.
-  The empty response `{}` indicates a network error
+  The empty response ``{}`` indicates a network error
   when attempting to call "hello" or legacy hello.
 
 An "applicationError" object has the following keys:

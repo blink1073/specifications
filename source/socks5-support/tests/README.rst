@@ -30,8 +30,8 @@ be run after the backing replica set has already been started,
 and MUST be started with ``--map "localhost:12345 to <host>"` where
 ``host` is the host:port identifier of an arbitrary member of the replica set.
 The SOCKS5 proxy server requiring authentication MUST be started with
-``--port 1080 --auth username:p4ssw0rd`, the one not requiring authentication
-with `--port 1081``.
+``--port 1080 --auth username:p4ssw0rd``, the one not requiring authentication
+with ``--port 1081``.
 
 Prose Tests
 ===========

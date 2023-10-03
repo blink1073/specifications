@@ -127,7 +127,7 @@ Drivers MUST NOT use the SOCKS5 proxy for connections to
 
 Drivers MUST treat a connection failure when connecting to the SOCKS5
 proxy or a SOCKS5 handshake or authentication failure the same as a
-network error (e.g. `ECONNREFUSED`).
+network error (e.g. ``ECONNREFUSED``).
 
 Events
 ------
@@ -162,10 +162,10 @@ Why are the connection string parameters generic, with no explicit mention of SO
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In the case that future changes will enable drivers using other proxy protocols,
-keeping the option names generic allows their re-use.
+keeping the option names generic allows their reuse.
 In that case, another option would specify the protocol and SOCKS5 would be the
 implied default. However, since there is no reason to believe that such additions
-will be made in the forseeable future, no option for specifying the proxy protocol
+will be made in the foreseeable future, no option for specifying the proxy protocol
 is introduced here.
 
 Why is support for authentication methods limited to no authentication and username/password authentication?

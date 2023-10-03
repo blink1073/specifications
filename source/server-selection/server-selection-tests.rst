@@ -305,7 +305,7 @@ Multi-threaded and async drivers MUST also implement the following prose test:
    * This helps reduce any noise introduced by connection establishment latency
      during the actual server selection tests.
 
-#. Start 10 concurrent threads / tasks that each run 10 `findOne` operations
+#. Start 10 concurrent threads / tasks that each run 10 ``findOne`` operations
    with empty filters using that client.
 
 #. Using command monitoring events, assert that fewer than 25% of the
@@ -313,7 +313,7 @@ Multi-threaded and async drivers MUST also implement the following prose test:
 
 #. Disable the failpoint.
 
-#. Start 10 concurrent threads / tasks that each run 100 `findOne` operations
+#. Start 10 concurrent threads / tasks that each run 100 ``findOne`` operations
    with empty filters using that client.
 
 #. Using command monitoring events, assert that each mongos was selected

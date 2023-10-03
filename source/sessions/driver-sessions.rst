@@ -203,7 +203,7 @@ instances at the same time (see the Server Session Pool section). Additionally,
 a ``ClientSession`` may only ever be associated with one ``ServerSession`` for
 its lifetime.
 
-Drivers MUST NOT check for session support in `startSession`. Instead, if sessions 
+Drivers MUST NOT check for session support in ``startSession``. Instead, if sessions
 are not supported, the error MUST be reported the first time the session is used
 for an operation (See `How to Tell Whether a Connection Supports Sessions`_).
 
@@ -452,7 +452,7 @@ New collection methods that take an explicit session
 ----------------------------------------------------
 
 All ``MongoCollection`` methods that talk to the server, with the exception of
-`estimatedDocumentCount`, SHOULD be overloaded to take an explicit session
+``estimatedDocumentCount``, SHOULD be overloaded to take an explicit session
 parameter. (See `why is session an explicit parameter?`_.)
 
 When overloading methods to take a session parameter, the session parameter
@@ -464,8 +464,8 @@ Methods that have a session parameter MUST check that the session argument is
 not null and was created by the same ``MongoClient`` that this ``MongoCollection`` came
 from and report an error if they do not match.
 
-The `estimatedDocumentCount` helper does not support an explicit session
-parameter. The underlying command, `count`, is not supported in a transaction,
+The ``estimatedDocumentCount`` helper does not support an explicit session
+parameter. The underlying command, ``count``, is not supported in a transaction,
 so supporting an explicit session would likely confuse application developers.
 The helper returns an estimate of the documents in a collection and
 causal consistency is unlikely to improve the accuracy of the estimate.
@@ -526,7 +526,7 @@ to the server:
   not close the socket in this scenario, so the driver will conclude that
   the server at the other end of this connection supports sessions.
 
-There is nothing that the driver can do about this race condition, and the server 
+There is nothing that the driver can do about this race condition, and the server
 will just return an error in this scenario.
 
 Sending the session ID to the server on all commands
@@ -1069,7 +1069,7 @@ problems:
    complete. For example, a transactional write will block a subsequent
    transactional write.
 
-Why do automatic retry attempts re-use a dirty implicit session?
+Why do automatic retry attempts reuse a dirty implicit session?
 ----------------------------------------------------------------
 
 The retryable writes spec requires that both the original and retry attempt

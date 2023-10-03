@@ -655,8 +655,8 @@ Q & A
 What do the additional error codes mean?
 ----------------------------------------
 
-The errors `HostNotFound`, `HostUnreachable`, `NetworkTimeout`,
-`SocketException` may be returned from mongos during problems routing to a
+The errors ``HostNotFound``, ``HostUnreachable``, ``NetworkTimeout``,
+``SocketException`` may be returned from mongos during problems routing to a
 shard. These may be transient, or localized to that mongos.
 
 Why are write operations only retried once by default?
@@ -765,7 +765,7 @@ operations (e.g. ``renameCollection``) are rare.
 
 That said, drivers will need to clearly document exactly which operations
 support retryable behavior. In the case ``bulkWrite()``, which may or may not
-support retryability, drivers should discuss how elegibility is determined.
+support retryability, drivers should discuss how eligibility is determined.
 
 Can drivers resend the same wire protocol message on retry attempts?
 --------------------------------------------------------------------

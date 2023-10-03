@@ -83,7 +83,7 @@ database command, which can be used to limit the command result to only include 
 the user is authorized to use. Drivers SHOULD support the new ``authorizedDatabases``
 option when implementing the `listDatabases`_ database command.
 
-The possible values for `authorizedDatabases` are:
+The possible values for ``authorizedDatabases`` are:
 
 - unspecified (missing entirely from the command document sent to the server)
 - ``false``
@@ -258,12 +258,12 @@ Design Rationale
 ================
 
 The design of this specification is inspired by the `Collection Enumeration`_
-and `Index Enumeration`_ specifications. Since most drivers already implement a
+and `Index Management`_ specifications. Since most drivers already implement a
 ``listDatabases`` command helper in some fashion, this spec is flexible when it
 comes to existing APIs.
 
 .. _Collection Enumeration: ./enumerate-collections.rst
-.. _Index Enumeration: ./enumerate-indexes.rst
+.. _Index Management: ./index-management/index-management.rst
 
 Backwards Compatibility
 =======================

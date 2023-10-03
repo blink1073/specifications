@@ -160,7 +160,7 @@ The **secondaryOk** flag SHOULD not be set for all follow-up **getMore** and **k
 
 More detailed information about the interaction of the **secondaryOk** with **OP_QUERY** can be found in the Server Selection Spec `Passing a Read Preference`_.
 
-.. _Passing a Read Preference: https://github.com/mongodb/specifications/blob/master/source/server-selection/server-selection.rst#passing-read-preference-to-mongos
+.. _Passing a Read Preference: ./server-selection/server-selection.rst#passing-read-preference-to-mongos
 
 Behavior of Limit, skip and batchSize
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -198,7 +198,7 @@ closed on 5.0:
     {getMore: ..., batchSize:1} // Returns remaining items but leaves cursor open on 5.0+
     {...}          // Kills server-side cursor. Necessary on 5.0+
 
-.. _CRUD: https://github.com/mongodb/specifications/blob/master/source/crud/crud.rst#id16
+.. _CRUD: ./crud/crud.rst#api
 
 If there are not enough documents in the cursor to fulfill the **limit** defined, the cursor runs to exhaustion and is closed, returning a cursorId of 0 to the client.
 
@@ -264,7 +264,7 @@ Tailable cursors
 ^^^^^^^^^^^^^^^^
 
 By default, most cursors are non-tailable. For example, a typical ``find`` cursor is exhausted when all results for the filter have been returned.
-MongoDB also supports creating cursors that "tail" or follow the target namespace for new data. This is done via the `find` command's `tailable` option.
+MongoDB also supports creating cursors that "tail" or follow the target namespace for new data. This is done via the ``find`` command's ``tailable`` option.
 Querying a capped collection is one use case for a tailable cursor.
 A tailable cursor can receive ``getMore`` responses with an empty ``nextBatch`` array, which does not indicate that the cursor has been exhausted.
 
@@ -417,7 +417,7 @@ The **OP_REPLY** message has the following general structure.
         int32     requestID;      // identifier for this message
 
         int32     responseTo;     // requestID from the original
-                                  // request(used in reponses from db)
+                                  // request(used in responses from db)
 
         int32     opCode;         // request type - see table below
 
@@ -481,7 +481,7 @@ The **find** and **getMore** commands will report errors using the standard mech
 
 Like other commands, the find and getMore commands will not use the OP_REPLY response flags. `OP_REPLY Documentation`_
 
-.. _OP_REPLY Documentation: https://www.mongodb.com/docs/meta-driver/latest/legacy/mongodb-wire-protocol/#op-reply
+.. _OP_REPLY Documentation: https://www.mongodb.com/docs/manual/legacy-opcodes/#op_reply
 
 FAQ
 ===
@@ -511,7 +511,7 @@ This format is general for all commands when executing against a Mongos proxy.
 
 More in depth information about passing read preferences to Mongos can be found in the Server Selection Specification `Server Selection Specification`_.
 
-.. _Server Selection Specification: https://github.com/mongodb/specifications/blob/master/source/server-selection/server-selection.rst#passing-read-preference-to-mongos
+.. _Server Selection Specification: ./server-selection/server-selection.rst#passing-read-preference-to-mongos
 
 Changelog
 =========

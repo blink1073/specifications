@@ -147,7 +147,7 @@ Standard API
 
     /**
      * Creates multiple indexes in the collection.
-     * 
+     *
      * In all server versions, this MUST execute a createIndexes command.
      *
      * @return The names of all the indexes that were created.
@@ -192,7 +192,7 @@ Standard API
     dropIndexes(options: Optional<DropIndexesOptions>): Result;
 
     /**
-     * Gets index information for all indexes in the collection. The behavior for 
+     * Gets index information for all indexes in the collection. The behavior for
      * enumerating indexes is described in the :ref:`Enumerating Indexes` section.
      *
      */
@@ -414,8 +414,8 @@ Index View API
      * For drivers that cannot make IndexView iterable, they MUST implement this method to
      * return a list of indexes. In the case of async drivers, this MAY return a Future<Cursor>
      *  or language/implementation equivalent.
-     * 
-     *  If drivers are unable to make the IndexView iterable, they MAY opt to provide the options for 
+     *
+     *  If drivers are unable to make the IndexView iterable, they MAY opt to provide the options for
      *  listing search indexes via the `list` method instead of the `Collection.indexes` method.
 
      */
@@ -452,7 +452,7 @@ Index View API
      *
      * @note Each specification document becomes the "key" field in the document that
      *   is inserted or the command.
-     *   
+     *
      */
     createMany(models: Iterable<IndexModel>, options: Optional<CreateManyIndexesOptions>): Iterable<String>;
 
@@ -815,7 +815,7 @@ Common API Components
 
     /**
      * Configures the batch size of the cursor returned from the ``listIndexes`` command.
-     * 
+     *
      * @note drivers MAY chose to support batchSize on the ListIndexesOptions.
      */
     batchSize: Optional<Int32>;
@@ -860,7 +860,7 @@ Example::
 Search Indexes
 --------------
 
-Server 7.0 introduced three new server commands and a new aggregation stage to facilitate management of search indexes.  Drivers MUST provide 
+Server 7.0 introduced three new server commands and a new aggregation stage to facilitate management of search indexes.  Drivers MUST provide
 an API similar to the existing index management API specifically for search indexes.  Drivers MAY choose to implement either the standard
 API or the index view API.
 
@@ -869,7 +869,7 @@ Search Index Management Helper Options
 
 There are currently no supported options for any of the search index management commands.  To future proof
 drivers implementations so that any options added in the future do not constitute a breaking change to drivers,
-empty options structs have been added as placeholders.  If a driver's language has a mechanism to add options 
+empty options structs have been added as placeholders.  If a driver's language has a mechanism to add options
 in a non-breaking manner (i.e., method overloading) drivers MAY omit the empty options structs from their
 search index management helpers.
 
@@ -896,7 +896,7 @@ An example, from Javascript:
 Where are read concern and write concern?
 -----------------------------------------
 
-These commands internally proxy the search index management commands to a separate process that runs alongside an Atlas cluster.  As such, read concern and 
+These commands internally proxy the search index management commands to a separate process that runs alongside an Atlas cluster.  As such, read concern and
 write concern are not relevant for the search index management commands.
 
 Consistency with Existing APIs
@@ -907,7 +907,7 @@ Drivers SHOULD strive for a search index management API that is as consistent as
 NamespaceNotFound Errors
 ------------------------
 
-Some drivers suppress NamespaceNotFound errors for CRUD helpers.  Drivers MAY suppress NamespaceNotFound errors from 
+Some drivers suppress NamespaceNotFound errors for CRUD helpers.  Drivers MAY suppress NamespaceNotFound errors from
 the search index management helpers.
 
 Drivers MUST suppress NamespaceNotFound errors for the ``dropSearchIndex`` helper.  Drop operations should be idempotent:
@@ -939,10 +939,10 @@ Common Interfaces
   }
 
   /**
-   * The following interfaces are empty but are provided as placeholders for drivers that cannot 
+   * The following interfaces are empty but are provided as placeholders for drivers that cannot
    * add options in a non-breaking manner, if options are added in the future.
    */
-  interface CreateSearchIndexOptions {} 
+  interface CreateSearchIndexOptions {}
   interface UpdateSearchIndexOptions {}
   interface ListSearchIndexOptions {}
   interface DropSearchIndexOptions {}
@@ -955,22 +955,22 @@ Standard API for Search Indexes
   interface Collection {
     /**
      * Convenience method for creating a single search index.
-     * 
+     *
      * @return The name of the created search index
-     * 
+     *
      * @note Drivers MAY opt to implement this method signature, the signature that
      *   takes an SearchIndexModel as a parameter, or for those languages with method
      *   overloading MAY decide to implement both.
-     *   
+     *
      * @note Drivers MAY combine the `indexOptions` with the `createSearchIndexOptions`, if that is idiomatic for their language.
      */
     createSearchIndex(definition: Document, indexOptions: Optional<SearchIndexOptions>, createSearchIndexOptions: Optional<CreateSearchIndexOptions>): String;
 
     /**
      * Convenience method for creating a single index.
-     * 
+     *
      * @return The name of the created search index
-     * 
+     *
      * @note Drivers MAY opt to implement this method signature, the signature that
      *   takes an name and a definition as parameters, or for those languages with method
      *   overloading MAY decide to implement both.
@@ -979,13 +979,13 @@ Standard API for Search Indexes
 
     /**
      * Creates multiple search indexes on the collection.
-     * 
+     *
      * @return An iterable of the newly created index names.
      */
     createSearchIndexes(models: Iterable<SearchIndexModel>, options: CreateSearchIndexOptions): Iterable<String>;
 
     /**
-     * Updates the search index with the given name to use the provided 
+     * Updates the search index with the given name to use the provided
      * definition.
      */
     updateSearchIndex(name: String, definition: Document, options: Optional<UpdateSearchIndexOptions>): void;
@@ -1017,7 +1017,7 @@ Index View API for Search Indexes
 
   interface SearchIndexView extends Iterable<Document> {
     /**
-     * Enumerates the index information for all search indexes in the collection. 
+     * Enumerates the index information for all search indexes in the collection.
      *
      * @note For drivers that cannot make the IndexView iterable, they MUST implement a list
      *   method. See below.
@@ -1028,8 +1028,8 @@ Index View API for Search Indexes
      * For drivers that cannot make SearchIndexView iterable, they MUST implement this method to
      * return a list of indexes. In the case of async drivers, this MAY return a Future<Cursor>
      *  or language/implementation equivalent.
-     *  
-     *  If drivers are unable to make the SearchIndexView iterable, they MAY opt to provide the options for 
+     *
+     *  If drivers are unable to make the SearchIndexView iterable, they MAY opt to provide the options for
      *  listing search indexes via the `list` method instead of the `Collection.searchIndexes` method.
      */
     list(): Cursor<Document>;
@@ -1043,7 +1043,7 @@ Index View API for Search Indexes
      * @note Drivers MAY opt to implement this method signature, the signature that
      *   takes an SearchIndexModel as a parameter, or for those languages with method
      *   overloading MAY decide to implement both.
-     *   
+     *
      * @note Drivers MAY combine the `indexOptions` with the `createSearchIndexOptions`, if that is idiomatic for their language.
      */
     createOne(definition: Document, indexOptions: Optional<SearchIndexOptions>, createSearchIndexOptions: Optional<CreateSearchIndexOptions>): String;
@@ -1106,7 +1106,7 @@ Q: What is the difference between write concern and ``commitQuorum``?
   Also note that, since indexes are built simultaneously, higher values of ``commitQuorum`` are not as expensive as higher values of ``writeConcern``.
 
 Q: Why does the driver manually throw errors if the ``commitQuorum`` option is specified against a pre 4.4 server?
-  Starting in 3.4, the server validates all options passed to the ``createIndexes`` command, but due to a bug in versions 4.2.0-4.2.5 of the server (SERVER-47193), specifying ``commitQuorum`` does not result in an error. The option is used interally by the server on those versions, and its value could have adverse effects on index builds. To prevent users from mistakenly specifying this option, drivers manually verify it is only sent to 4.4+ servers.
+  Starting in 3.4, the server validates all options passed to the ``createIndexes`` command, but due to a bug in versions 4.2.0-4.2.5 of the server (SERVER-47193), specifying ``commitQuorum`` does not result in an error. The option is used internally by the server on those versions, and its value could have adverse effects on index builds. To prevent users from mistakenly specifying this option, drivers manually verify it is only sent to 4.4+ servers.
 
 Changelog
 ---------
@@ -1133,7 +1133,7 @@ Changelog
 :2022-04-18: Added the ``clustered`` attribute to ``IndexOptions`` in order to
              support clustered collections.
 :2022-10-05: Remove spec front matter and reformat changelog.
-:2023-05-10:  Merge index enumeration and index management specs and get rid of references 
+:2023-05-10:  Merge index enumeration and index management specs and get rid of references
              to legacy server versions.
 :2023-05-18:  Add the search index management API.
 :2023-07-27:  Add search index management clarifications.

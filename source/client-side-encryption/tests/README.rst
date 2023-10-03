@@ -47,16 +47,16 @@ The spec tests format is an extension of `transactions spec tests <https://githu
 
 - A ``key_vault_data`` of data that should be inserted in the key vault collection before each test.
 
-- Introduction ``autoEncryptOpts`` to `clientOptions`
+- Introduction ``autoEncryptOpts`` to ``clientOptions``
 
-- Addition of `$db` to command in `command_started_event`
+- Addition of ``$db`` to command in ``command_started_event``
 
-- Addition of `$$type` to command_started_event and outcome.
+- Addition of ``$$type`` to command_started_event and outcome.
 
-The semantics of `$$type` is that any actual value matching one of the types indicated by either a BSON type string
+The semantics of ``$$type`` is that any actual value matching one of the types indicated by either a BSON type string
 or an array of BSON type strings is considered a match.
 
-For example, the following matches a command_started_event for an insert of a document where `random` must be of type ``binData``::
+For example, the following matches a command_started_event for an insert of a document where ``random`` must be of type ``binData``::
 
   - command_started_event:
       command:
@@ -77,7 +77,7 @@ The following matches a command_started_event for an insert of a document where 
         ordered: true
       command_name: insert
 
-The values of `$$type` correspond to `these documented string representations of BSON types <https://www.mongodb.com/docs/manual/reference/bson-types/>`_.
+The values of ``$$type`` correspond to `these documented string representations of BSON types <https://www.mongodb.com/docs/manual/reference/bson-types/>`_.
 
 
 Each YAML file has the following keys:
@@ -838,7 +838,7 @@ The method of passing TLS options for KMIP TLS connections is driver dependent.
 Test cases
 ``````````
 
-1. Call `client_encryption.createDataKey()` with "aws" as the provider and the following masterKey:
+1. Call ``client_encryption.createDataKey()`` with "aws" as the provider and the following masterKey:
 
    .. code:: javascript
 
@@ -849,7 +849,7 @@ Test cases
 
    Expect this to succeed. Use the returned UUID of the key to explicitly encrypt and decrypt the string "test" to validate it works.
 
-2. Call `client_encryption.createDataKey()` with "aws" as the provider and the following masterKey:
+2. Call ``client_encryption.createDataKey()`` with "aws" as the provider and the following masterKey:
 
    .. code:: javascript
 
@@ -861,7 +861,7 @@ Test cases
 
    Expect this to succeed. Use the returned UUID of the key to explicitly encrypt and decrypt the string "test" to validate it works.
 
-3. Call `client_encryption.createDataKey()` with "aws" as the provider and the following masterKey:
+3. Call ``client_encryption.createDataKey()`` with "aws" as the provider and the following masterKey:
 
    .. code:: javascript
 
@@ -873,7 +873,7 @@ Test cases
 
    Expect this to succeed. Use the returned UUID of the key to explicitly encrypt and decrypt the string "test" to validate it works.
 
-4. Call `client_encryption.createDataKey()` with "aws" as the provider and the following masterKey:
+4. Call ``client_encryption.createDataKey()`` with "aws" as the provider and the following masterKey:
 
    .. code:: javascript
 
@@ -885,7 +885,7 @@ Test cases
 
    Expect this to fail with a socket connection error.
 
-5. Call `client_encryption.createDataKey()` with "aws" as the provider and the following masterKey:
+5. Call ``client_encryption.createDataKey()`` with "aws" as the provider and the following masterKey:
 
    .. code:: javascript
 
@@ -897,7 +897,7 @@ Test cases
 
    Expect this to fail with an exception.
 
-6. Call `client_encryption.createDataKey()` with "aws" as the provider and the following masterKey:
+6. Call ``client_encryption.createDataKey()`` with "aws" as the provider and the following masterKey:
 
    .. code:: javascript
 
@@ -909,7 +909,7 @@ Test cases
 
    Expect this to fail with a network exception indicating failure to resolve "doesnotexist.invalid".
 
-7. Call `client_encryption.createDataKey()` with "azure" as the provider and the following masterKey:
+7. Call ``client_encryption.createDataKey()`` with "azure" as the provider and the following masterKey:
 
    .. code:: javascript
 
@@ -922,7 +922,7 @@ Test cases
 
    Call ``client_encryption_invalid.createDataKey()`` with the same masterKey. Expect this to fail with a network exception indicating failure to resolve "doesnotexist.invalid".
 
-8. Call `client_encryption.createDataKey()` with "gcp" as the provider and the following masterKey:
+8. Call ``client_encryption.createDataKey()`` with "gcp" as the provider and the following masterKey:
 
    .. code:: javascript
 
@@ -936,9 +936,9 @@ Test cases
 
    Expect this to succeed. Use the returned UUID of the key to explicitly encrypt and decrypt the string "test" to validate it works.
 
-   Call ``client_encryption_invalid.createDataKey()`` with the same masterKey. Expect this to fail with a network exception indicating failure to resolve "doesnotexist.invalid".
+   Call ````client_encryption_invalid.createDataKey()```` with the same masterKey. Expect this to fail with a network exception indicating failure to resolve "doesnotexist.invalid".
 
-9. Call `client_encryption.createDataKey()` with "gcp" as the provider and the following masterKey:
+9. Call ``client_encryption.createDataKey()`` with "gcp" as the provider and the following masterKey:
 
    .. code:: javascript
 
@@ -952,7 +952,7 @@ Test cases
 
    Expect this to fail with an exception with a message containing the string: "Invalid KMS response".
 
-10. Call `client_encryption.createDataKey()` with "kmip" as the provider and the following masterKey:
+10. Call ``client_encryption.createDataKey()`` with "kmip" as the provider and the following masterKey:
 
     .. code:: javascript
 
@@ -1159,7 +1159,7 @@ Proceed to run the test case.
 
 Each test case configures a ``MongoClient`` with automatic encryption (named ``client_encrypted``).
 
-Each test must assert the number of unique ``MongoClient``s created. This can be accomplished by capturing ``TopologyOpeningEvent``, or by checking command started events for a client identifier (not possible in all drivers).
+Each test must assert the number of unique ``MongoClient`` objects created. This can be accomplished by capturing ``TopologyOpeningEvent``, or by checking command started events for a client identifier (not possible in all drivers).
 
 Running a test case
 ```````````````````
@@ -1177,7 +1177,7 @@ Running a test case
 - Use ``client_encrypted`` to run a ``findOne`` operation on ``db.coll``, with the filter ``{ "_id": 0 }``.
 - Expect the result to be ``{ "_id": 0, "encrypted": "string0" }``.
 - Check captured events against ``TestCase.Expectations``.
-- Check the number of unique ``MongoClient``s created is equal to ``TestCase.ExpectedNumberOfClients``.
+- Check the number of unique ``MongoClient`` objects created is equal to ``TestCase.ExpectedNumberOfClients``.
 
 Case 1
 ``````
@@ -1308,7 +1308,7 @@ Drivers that do not support an unlimited maximum pool size MUST skip this test.
 The following tests that connections to KMS servers with TLS verify peer certificates.
 
 The two tests below make use of mock KMS servers which can be run on Evergreen using `the mock KMS server script <https://github.com/mongodb-labs/drivers-evergreen-tools/blob/master/.evergreen/csfle/kms_http_server.py>`_.
-Drivers can set up their local Python enviroment for the mock KMS server by running `the virtualenv activation script <https://github.com/mongodb-labs/drivers-evergreen-tools/blob/master/.evergreen/csfle/activate_venv.sh>`_.
+Drivers can set up their local Python environment for the mock KMS server by running `the virtualenv activation script <https://github.com/mongodb-labs/drivers-evergreen-tools/blob/master/.evergreen/csfle/activate_venv.sh>`_.
 
 To start two mock KMS servers, one on port 9000 with `ca.pem`_ as a CA file and `expired.pem`_ as a cert file, and one on port 9001 with `ca.pem`_ as a CA file and `wrong-host.pem`_ as a cert file,
 run the following commands from the ``.evergreen/csfle`` directory:
@@ -1543,7 +1543,7 @@ Configure each with ``keyVaultNamespace`` set to ``keyvault.datakeys``, and a de
 Case 1: AWS
 ```````````
 
-Call `client_encryption_no_client_cert.createDataKey()` with "aws" as the provider and the
+Call ``client_encryption_no_client_cert.createDataKey()`` with "aws" as the provider and the
 following masterKey:
 
 .. code:: javascript
@@ -1556,7 +1556,7 @@ following masterKey:
 
 Expect an error indicating TLS handshake failed.
 
-Call `client_encryption_with_tls.createDataKey()` with "aws" as the provider and the
+Call ``client_encryption_with_tls.createDataKey()`` with "aws" as the provider and the
 following masterKey:
 
 .. code:: javascript
@@ -1570,7 +1570,7 @@ following masterKey:
 Expect an error from libmongocrypt with a message containing the string: "parse
 error". This implies TLS handshake succeeded.
 
-Call `client_encryption_expired.createDataKey()` with "aws" as the provider and the
+Call ``client_encryption_expired.createDataKey()`` with "aws" as the provider and the
 following masterKey:
 
 .. code:: javascript
@@ -1583,7 +1583,7 @@ following masterKey:
 
 Expect an error indicating TLS handshake failed due to an expired certificate.
 
-Call `client_encryption_invalid_hostname.createDataKey()` with "aws" as the provider and the
+Call ``client_encryption_invalid_hostname.createDataKey()`` with "aws" as the provider and the
 following masterKey:
 
 .. code:: javascript
@@ -1599,7 +1599,7 @@ Expect an error indicating TLS handshake failed due to an invalid hostname.
 Case 2: Azure
 `````````````
 
-Call `client_encryption_no_client_cert.createDataKey()` with "azure" as the provider and the
+Call ``client_encryption_no_client_cert.createDataKey()`` with "azure" as the provider and the
 following masterKey:
 
 .. code:: javascript
@@ -1608,18 +1608,18 @@ following masterKey:
 
 Expect an error indicating TLS handshake failed.
 
-Call `client_encryption_with_tls.createDataKey()` with "azure" as the provider
+Call ``client_encryption_with_tls.createDataKey()`` with "azure" as the provider
 and the same masterKey.
 
 Expect an error from libmongocrypt with a message containing the string: "HTTP
 status=404". This implies TLS handshake succeeded.
 
-Call `client_encryption_expired.createDataKey()` with "azure" as the provider and
+Call ``client_encryption_expired.createDataKey()`` with "azure" as the provider and
 the same masterKey.
 
 Expect an error indicating TLS handshake failed due to an expired certificate.
 
-Call `client_encryption_invalid_hostname.createDataKey()` with "azure" as the provider and
+Call ``client_encryption_invalid_hostname.createDataKey()`` with "azure" as the provider and
 the same masterKey.
 
 Expect an error indicating TLS handshake failed due to an invalid hostname.
@@ -1627,7 +1627,7 @@ Expect an error indicating TLS handshake failed due to an invalid hostname.
 Case 3: GCP
 ```````````
 
-Call `client_encryption_no_client_cert.createDataKey()` with "gcp" as the provider and the
+Call ``client_encryption_no_client_cert.createDataKey()`` with "gcp" as the provider and the
 following masterKey:
 
 .. code:: javascript
@@ -1636,18 +1636,18 @@ following masterKey:
 
 Expect an error indicating TLS handshake failed.
 
-Call `client_encryption_with_tls.createDataKey()` with "gcp" as the provider and
+Call ``client_encryption_with_tls.createDataKey()`` with "gcp" as the provider and
 the same masterKey.
 
 Expect an error from libmongocrypt with a message containing the string: "HTTP
 status=404". This implies TLS handshake succeeded.
 
-Call `client_encryption_expired.createDataKey()` with "gcp" as the provider and
+Call ``client_encryption_expired.createDataKey()`` with "gcp" as the provider and
 the same masterKey.
 
 Expect an error indicating TLS handshake failed due to an expired certificate.
 
-Call `client_encryption_invalid_hostname.createDataKey()` with "gcp" as the provider and
+Call ``client_encryption_invalid_hostname.createDataKey()`` with "gcp" as the provider and
 the same masterKey.
 
 Expect an error indicating TLS handshake failed due to an invalid hostname.
@@ -1655,7 +1655,7 @@ Expect an error indicating TLS handshake failed due to an invalid hostname.
 Case 4: KMIP
 ````````````
 
-Call `client_encryption_no_client_cert.createDataKey()` with "kmip" as the provider and the
+Call ``client_encryption_no_client_cert.createDataKey()`` with "kmip" as the provider and the
 following masterKey:
 
 .. code:: javascript
@@ -1664,23 +1664,23 @@ following masterKey:
 
 Expect an error indicating TLS handshake failed.
 
-Call `client_encryption_with_tls.createDataKey()` with "kmip" as the provider
+Call ``client_encryption_with_tls.createDataKey()`` with "kmip" as the provider
 and the same masterKey.
 
 Expect success.
 
-Call `client_encryption_expired.createDataKey()` with "kmip" as the provider and
+Call ``client_encryption_expired.createDataKey()`` with "kmip" as the provider and
 the same masterKey.
 
 Expect an error indicating TLS handshake failed due to an expired certificate.
 
-Call `client_encryption_invalid_hostname.createDataKey()` with "kmip" as the provider and
+Call ``client_encryption_invalid_hostname.createDataKey()`` with "kmip" as the provider and
 the same masterKey.
 
 Expect an error indicating TLS handshake failed due to an invalid hostname.
 
-Case 5: `tlsDisableOCSPEndpointCheck` is permitted
-``````````````````````````````````````````````````
+Case 5: ``tlsDisableOCSPEndpointCheck`` is permitted
+````````````````````````````````````````````````````
 
 This test does not apply if the driver does not support the the option ``tlsDisableOCSPEndpointCheck``.
 
@@ -2242,7 +2242,7 @@ Drivers MAY chose not to implement this prose test if their implementation of ``
          masterKey: {}
       }
 
-   Assert that `clientEncryption.rewrapManyDataKey` raises a client error indicating that the required ``RewrapManyDataKeyOpts.provider`` field is missing.
+   Assert that ``clientEncryption.rewrapManyDataKey`` raises a client error indicating that the required ``RewrapManyDataKeyOpts.provider`` field is missing.
 
 17.  On-demand GCP Credentials
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2344,7 +2344,7 @@ For each test case, follow the process for obtaining the token as outlined in
 the `automatic Azure credentials section <auto-azure_>`_ with the following
 changes:
 
-1. Instead of the standard IMDS TCP endpoint of `169.254.169.254:80`,
+1. Instead of the standard IMDS TCP endpoint of ``169.254.169.254:80``,
    communicate with the running ``fake_azure`` HTTP server.
 
 2. For each test case, the behavior of the server may be controlled by attaching
@@ -2555,8 +2555,8 @@ The Automatic Data Encryption Keys tests require MongoDB server 7.0+. The tests 
    MongoDB Server 7.0 introduced a backwards breaking change to the Queryable Encryption (QE) protocol: QEv2.
 	libmongocrypt 1.8.0 is configured to use the QEv2 protocol.
 
-For each of the following test cases, assume `DB` is a valid open database
-handle, and assume a ClientEncryption_ object `CE` created using the following
+For each of the following test cases, assume ``DB`` is a valid open database
+handle, and assume a ClientEncryption_ object ``CE`` created using the following
 options::
 
    clientEncryptionOptions: {
@@ -2596,7 +2596,7 @@ rejects an attempt to insert plaintext in an encrypted fields.
 .. highlight:: typescript
 .. default-role:: math
 
-1. Create a new create-collection options `Opts` including the following::
+1. Create a new create-collection options ``Opts`` including the following::
 
       {
          encryptedFields: {
@@ -2608,9 +2608,9 @@ rejects an attempt to insert plaintext in an encrypted fields.
          }
       }
 
-2. Invoke `CreateEncryptedCollection(CE, DB, "testing1", Opts, kmsProvider, masterKey)`
-   to obtain a new collection `Coll`. Expect success.
-3. Attempt to insert the following document into `Coll`::
+2. Invoke ``CreateEncryptedCollection(CE, DB, "testing1", Opts, kmsProvider, masterKey)``
+   to obtain a new collection ``Coll``. Expect success.
+3. Attempt to insert the following document into ``Coll``::
 
       {
          ssn: "123-45-6789"
@@ -2630,9 +2630,9 @@ there are no ``encryptedFields`` for the collection being created. Instead, it
 should generate an error indicated that the ``encryptedFields`` option is
 missing.
 
-1. Create a new empty create-collection options `Opts`. (i.e. it must not
+1. Create a new empty create-collection options ``Opts``. (i.e. it must not
    contain any ``encryptedFields`` options.)
-2. Invoke `CreateEncryptedCollection(CE, DB, "testing1", Opts, kmsProvider, masterKey)`.
+2. Invoke ``CreateEncryptedCollection(CE, DB, "testing1", Opts, kmsProvider, masterKey)``.
 3. Expect the invocation to fail with an error indicating that
    ``encryptedFields`` is not defined for the collection, and expect that no
    collection was created within the database. It would be *incorrect* for
@@ -2653,7 +2653,7 @@ when attempting to create a collection with such invalid settings.
    This test is not required if the type system of the driver has a compile-time
    check that fields' ``keyId``\ s are of the correct type.
 
-1. Create a new create-collection options `Opts` including the following::
+1. Create a new create-collection options ``Opts`` including the following::
 
       {
          encryptedFields: {
@@ -2665,7 +2665,7 @@ when attempting to create a collection with such invalid settings.
          }
       }
 
-2. Invoke `CreateEncryptedCollection(CE, DB, "testing1", Opts, kmsProvider, masterKey)`.
+2. Invoke ``CreateEncryptedCollection(CE, DB, "testing1", Opts, kmsProvider, masterKey)``.
 3. Expect an error from the server indicating a validation error at
    ``create.encryptedFields.fields.keyId``, which must be a UUID and not a
    boolean value.
@@ -2676,7 +2676,7 @@ Case 4: Insert encrypted value
 This test is continuation of the case 1 and provides a way to complete inserting
 with encrypted value.
 
-1. Create a new create-collection options `Opts` including the following::
+1. Create a new create-collection options ``Opts`` including the following::
 
       {
          encryptedFields: {
@@ -2688,11 +2688,11 @@ with encrypted value.
          }
       }
 
-2. Invoke `CreateEncryptedCollection(CE, DB, "testing1", Opts, kmsProvider, masterKey)`
-   to obtain a new collection `Coll` and data key `key1`. Expect success.
-3. Use `CE` to explicitly encrypt the string "123-45-6789" using
-   algorithm `Unindexed` and data key `key1`. Refer result as `encryptedPayload`.
-4. Attempt to insert the following document into `Coll`::
+2. Invoke ``CreateEncryptedCollection(CE, DB, "testing1", Opts, kmsProvider, masterKey)``
+   to obtain a new collection ``Coll`` and data key ``key1``. Expect success.
+3. Use ``CE`` to explicitly encrypt the string "123-45-6789" using
+   algorithm ``Unindexed`` and data key ``key1``. Refer result as ``encryptedPayload``.
+4. Attempt to insert the following document into ``Coll``::
 
       {
          ssn: <encryptedPayload>
@@ -3056,7 +3056,7 @@ Assert that an error was raised.
 
 
 Case 8: setting precision errors if the type is not double or Decimal128
-````````````````````````````````````````````````````````````````````
+````````````````````````````````````````````````````````````````````````
 This test case should be skipped if the encrypted field is ``encryptedDoublePrecision``, ``encryptedDoubleNoPrecision``, ``encryptedDecimalPrecision``, or ``encryptedDecimalNoPrecision``.
 
 Use ``clientEncryption.encrypt()`` to encrypt the value 6. Ensure the type matches that of the encrypted field.

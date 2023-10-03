@@ -72,7 +72,7 @@ Publishing and Subscribing
 
 The driver SHOULD publish events in a manner that is standard to the driver's language publish/subscribe patterns and is not strictly mandated in this specification.
 
-Similarly, as described in the `logging specification <../logging/logging.rst#implementation-requirements>`_ the driver SHOULD emit log messages in a manner that is standard for the language.
+Similarly, as described in the `logging specification <../logging/logging.rst#implementation-requirements>`__ the driver SHOULD emit log messages in a manner that is standard for the language.
 
 ----------
 Guarantees
@@ -405,7 +405,7 @@ the value to the default read preference, ``primary``, or treat the call as if `
 ------------
 Log Messages
 ------------
-Please refer to the `logging specification <../logging/logging.rst>`_ for details on logging implementations in general, including log levels, log
+Please refer to the `logging specification <../logging/logging.rst>`__ for details on logging implementations in general, including log levels, log
 components, and structured versus unstructured logging.
 
 Drivers MUST support logging of SDAM information via the following types of log messages. These messages MUST be logged at ``Debug`` level and use
@@ -437,7 +437,7 @@ The following key-value pairs are common to all or several log messages and MUST
      - All messages
      - Flexible
      - The driver's unique ID for this topology as discussed in `Topology IDs <#topology-ids>`_. The type
-       is flexible depending on the driver's choice of type for topology ID. 
+       is flexible depending on the driver's choice of type for topology ID.
 
    * - serverHost
      - Log messages specific to a particular server, including heartbeat-related messages
@@ -448,12 +448,12 @@ The following key-value pairs are common to all or several log messages and MUST
      - Log messages specific to a particular server, including heartbeat-related messages
      - Int
      - (Only present for server-specific log messages) The port for the endpoint the pool is for. Optional; not present for Unix domain sockets. When
-       the user does not specify a port and the default (27017) is used, the driver SHOULD include it here. 
+       the user does not specify a port and the default (27017) is used, the driver SHOULD include it here.
 
    * - driverConnectionId
-     - Heartbeat-related log messages 
+     - Heartbeat-related log messages
      - Int
-     - The driver-generated ID for the monitoring connection as defined in the 
+     - The driver-generated ID for the monitoring connection as defined in the
        `connection monitoring and pooling specification <../connection-monitoring-and-pooling/connection-monitoring-and-pooling.rst>`_. Unlike
        ``connectionId`` in the above events, this field MUST NOT contain the host/port; that information MUST be in the above fields,
        ``serverHost`` and ``serverPort``. This field is optional for drivers that do not implement CMAP if they do have an equivalent concept of
@@ -572,12 +572,12 @@ In addition to the relevant common fields, these messages MUST contain the follo
      - "Topology description changed"
 
    * - previousDescription
-     - String 
+     - String
      - A string representation of the previous description of the topology. The format is flexible and could be e.g. the ``toString()`` implementation
        for a driver's topology description type, or an extended JSON representation of the topology object.
 
    * - newDescription
-     - String 
+     - String
      - A string representation of the new description of the server. The format is flexible and could be e.g. the ``toString()`` implementation
        for a driver's topology description type, or an extended JSON representation of the topology object.
 
@@ -604,7 +604,7 @@ In addition to the relevant common fields, these messages MUST contain the follo
      - "Server heartbeat started"
 
    * - awaited
-     - Boolean 
+     - Boolean
      - Whether this log message is for an awaitable hello or legacy "hello".
 
 The unstructured form SHOULD be as follows, using the values defined in the structured format above to fill in placeholders as appropriate:
@@ -631,7 +631,7 @@ In addition to the relevant common fields, these messages MUST contain the follo
      - "Server heartbeat succeeded"
 
    * - awaited
-     - Boolean 
+     - Boolean
      - Whether this log message is for an awaitable hello or legacy "hello".
 
    * - durationMS
@@ -641,7 +641,7 @@ In addition to the relevant common fields, these messages MUST contain the follo
 
    * - reply
      - String
-     - Relaxed extended JSON representation of the reply to the heartbeat command.     
+     - Relaxed extended JSON representation of the reply to the heartbeat command.
 
 The unstructured form SHOULD be as follows, using the values defined in the structured format above to fill in placeholders as appropriate:
 
@@ -667,7 +667,7 @@ In addition to the relevant common fields, these messages MUST contain the follo
      - "Server heartbeat failed"
 
    * - awaited
-     - Boolean 
+     - Boolean
      - Whether this log message is for an awaitable hello or legacy "hello".
 
    * - durationMS
@@ -677,8 +677,8 @@ In addition to the relevant common fields, these messages MUST contain the follo
 
    * - failure
      - Flexible
-     - The error. The type and format of this value is flexible; see the `logging specification <../logging/logging.rst#representing-errors-in-log-messages>`_ 
-       for details on representing errors in log messages. If the command is considered sensitive, the error MUST be redacted and replaced with a 
+     - The error. The type and format of this value is flexible; see the `logging specification <../logging/logging.rst#representing-errors-in-log-messages>`__
+       for details on representing errors in log messages. If the command is considered sensitive, the error MUST be redacted and replaced with a
        language-appropriate alternative for a redacted error, e.g. an empty string, empty document, or null.
 
 The unstructured form SHOULD be as follows, using the values defined in the structured format above to fill in placeholders as appropriate:
@@ -697,7 +697,7 @@ Changelog
 =========
 
 :2023-03-31: Renamed to include "logging" in the title. Reorganized contents and made consistent with CLAM spec, and added requirements
-             for SDAM log messages. 
+             for SDAM log messages.
 :2022-10-05: Remove spec front matter and reformat changelog.
 :2021-05-06: Updated to use modern terminology.
 :2020-04-20: Add rules for streaming heartbeat protocol and add "awaited" field to heartbeat events.

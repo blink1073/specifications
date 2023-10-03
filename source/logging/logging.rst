@@ -37,7 +37,6 @@ Unstructured logging
     Unstructured logging refers to producing string log messages which embed all attached
     information within that string.
 
----------------------------
 Implementation requirements
 ---------------------------
 Drivers SHOULD implement support for logging in a manner that is idiomatic for their language and
@@ -97,13 +96,13 @@ on a per-component level, for each component defined below in the `Components`_ 
 
 Configurable Log Destination
 ----------------------------
-Drivers MUST support configuring where log messages should be output, including the options: 
+Drivers MUST support configuring where log messages should be output, including the options:
 
 * stdout
 * stderr
 * Output file (path MUST be configurable). For languages that are not relying on a logging interface or framework to handle
-  file support, the driver can choose to either support this directly (i.e. the driver allows the user to specify 
-  a path and itself handles writing to that path), or to instead provide a straightforward, idiomatic way to programmatically 
+  file support, the driver can choose to either support this directly (i.e. the driver allows the user to specify
+  a path and itself handles writing to that path), or to instead provide a straightforward, idiomatic way to programmatically
   consume the messages and in turn write them to a file, e.g. via a Node.js `stream <https://nodejs.org/api/stream.html>`__, along with a
   documentation example of how to do this.
 
@@ -298,7 +297,7 @@ Logging Failures
 ----------------
 Specifications MAY define log messages that correspond to failures which also are reported
 via exceptions in the API, for example a "command failed" log message. Such messages MUST NOT
-use log levels more severe than ``debug``. 
+use log levels more severe than ``debug``.
 
 While it might seem natural that such messages would be logged at ``error`` level, not all
 failures that the driver considers worthy of an error will be considered a true error
@@ -356,7 +355,7 @@ Drivers MAY add timestamps to their log messages if one will not be added automa
 Supporting Both Programmatic and Environment Variable Configuration
 -------------------------------------------------------------------
 If a driver supports configuration via both environment variables and programmatically via API,
-programmatic configuration MUST take precedence over environment variables. 
+programmatic configuration MUST take precedence over environment variables.
 Drivers supporting both forms of configuration MUST document this behavior and MUST provide an
 example of how users can implement custom logic to allow an environment variable to override
 a programmatic default, so that users who prefer the opposite behavior have a way to achieve it.
@@ -436,7 +435,7 @@ be null for certain applications (e.g. ``serviceId`` when not connected to a loa
 and their inclusion may confuse users and lead them to think the null value is meaningful.
 Additionally, always including null values would increase the size of log messages. The omission of
 null values is left to the drivers' discretion for any driver-specific logs not covered by common
-specification components. 
+specification components.
 
 ---------------------------------------
 Invalid Values of Environment Variables
@@ -445,14 +444,14 @@ For drivers supporting configuration via environment variables, the spec require
 variable is set to an invalid value the driver behaves as if the value were not specified at all, and
 optionally warns the user but does not throw an error. We considered the following alternatives:
 
-1. Drivers could be required to throw an exception if a value is invalid: This was rejected because of concerns 
+1. Drivers could be required to throw an exception if a value is invalid: This was rejected because of concerns
    around the implications for environments/applications where multiple versions of the driver or multiple
    drivers may be present and where the validation logic may not match, meaning a value considered valid for
    one driver/version might not be by another. Additionally, there is no obvious place to throw an exception
    from about invalid environment variables; ``MongoClient`` constructors would be one possibility, but not all
    languages will support per-client configuration so throwing there regarding an environment variable might be
-   surprising to users. 
-  
+   surprising to users.
+
    Note that these same concerns do not apply to logging options that are specified via driver API: there is no
    risk of such options propagating to other drivers/driver versions present, and drivers can report exceptions at
    the point the options are specified, either globally or per-client. Therefore, drivers MUST validate

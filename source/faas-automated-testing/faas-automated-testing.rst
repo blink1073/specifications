@@ -57,10 +57,10 @@ For the initial local setup the following are required:
 AWS access MUST be configured, either through ``$HOME/.aws/credentials`` or
 with the following environment variables:
 
-- `AWS_ACCESS_KEY_ID`
-- `AWS_SECRET_ACCESS_KEY`
-- `AWS_REGION` - Set to us-east-1
-- `MONGODB_URI` - The local MongoDB instance
+- ``AWS_ACCESS_KEY_ID``
+- ``AWS_SECRET_ACCESS_KEY``
+- ``AWS_REGION`` - Set to us-east-1
+- ``MONGODB_URI`` - The local MongoDB instance
 
 Project Initialization
 ``````````````````````
@@ -179,10 +179,10 @@ Add a root parameter for the MongoDB connection string:
       Type: String
       Description: The MongoDB connection string.
 
-Replace all instances in the template.yaml of `HelloWorld` with `MongoDB` and then
-modify the root `Resources` config to add the MONGODB_URI env variable reference
-and change the `CodeUri` to mongodb/ : Then rename the `hello-world` directory to `mongodb`.
-Do not change the `Handler` and `Runtime` properties.
+Replace all instances in the template.yaml of ``HelloWorld`` with ``MongoDB`` and then
+modify the root ``Resources`` config to add the MONGODB_URI env variable reference
+and change the ``CodeUri`` to mongodb/ : Then rename the ``hello-world`` directory to ``mongodb``.
+Do not change the ``Handler`` and ``Runtime`` properties.
 
 .. code:: yaml
 

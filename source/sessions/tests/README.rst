@@ -16,7 +16,7 @@ meant to exercise a driver's implementation of sessions. These tests utilize the
 Snapshot session tests
 ~~~~~~~~~~~~~~~~~~~~~~
 The default snapshot history window on the server is 5 minutes. Running the test in debug mode, or in any other slow configuration
-may lead to `SnapshotTooOld` errors. Drivers can work around this issue by increasing the server's `minSnapshotHistoryWindowInSeconds` parameter, for example:
+may lead to ``SnapshotTooOld`` errors. Drivers can work around this issue by increasing the server's ``minSnapshotHistoryWindowInSeconds`` parameter, for example:
 
 .. code:: python
 
@@ -24,8 +24,8 @@ may lead to `SnapshotTooOld` errors. Drivers can work around this issue by incre
 
 Testing against servers that do not support sessions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Since all regular 3.6+ servers support sessions, the prose tests which test for session non-support SHOULD 
-use a mongocryptd server as the test server (available with server versions 4.2+); however, if future versions of mongocryptd 
+Since all regular 3.6+ servers support sessions, the prose tests which test for session non-support SHOULD
+use a mongocryptd server as the test server (available with server versions 4.2+); however, if future versions of mongocryptd
 support sessions or if mongocryptd is not a viable option for the driver implementing these tests, another server MAY be
 substituted as long as it does not return a non-null value for ``logicalSessionTimeoutMinutes``;
 in the event that no such server is readily available, a mock server may be used as a last resort.

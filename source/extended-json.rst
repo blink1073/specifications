@@ -96,7 +96,7 @@ Notes on grammar
   define the following subtypes:
 
   * Type *integer* means a JSON *number* without *frac* or *exp* components;
-    this is expressed in the JSON spec grammer as ``[minus] int``.
+    this is expressed in the JSON spec grammar as ``[minus] int``.
 
   * Type *non-integer* means a JSON *number* that is not an *integer*; it
     must include either a *frac* or *exp* component or both.
@@ -161,7 +161,7 @@ Conversion table
 |                    |"$id": *ObjectId*}}                                       |                                                       |
 +--------------------+----------------------------------------------------------+-------------------------------------------------------+
 |Datetime            |{"$date": {"$numberLong": <64-bit signed integer          | {"$date": <ISO-8601 Internet Date/Time Format         |
-|\[year from 1970    |giving millisecs relative to the epoch, as a *string*>}}  | as decribed in RFC-3339 [#]_ with maximum time        |
+|\[year from 1970    |giving millisecs relative to the epoch, as a *string*>}}  | as described in RFC-3339 [#]_ with maximum time       |
 |to 9999 inclusive\] |                                                          | precision of milliseconds [#]_ as a *string*>}        |
 +--------------------+----------------------------------------------------------+-------------------------------------------------------+
 |Datetime            |{"$date": {"$numberLong": <64-bit signed integer          | <Same as Canonical Extended JSON>                     |
@@ -198,7 +198,7 @@ Conversion table
 
 .. [#] BSON Regular Expression options MUST be in alphabetical order.
 
-.. [#] See https://www.mongodb.com/docs/manual/reference/glossary/#term-namespace
+.. [#] See https://www.mongodb.com/docs/manual/reference/glossary
 
 .. [#] See https://tools.ietf.org/html/rfc3339#section-5.6
 
@@ -207,7 +207,7 @@ Conversion table
 
 .. [#] See https://www.mongodb.com/docs/manual/reference/database-references/#dbrefs
 
-.. _Decimal128 specification: https://github.com/mongodb/specifications/blob/master/source/bson-decimal128/decimal128.rst#writing-to-extended-json
+.. _Decimal128 specification: ./bson-decimal128/decimal128.rst#writing-to-extended-json
 
 Representation of Non-finite Numeric Values
 ...........................................
@@ -225,7 +225,7 @@ values are encoded as follows:
 |NaN (all variants)                      |``NaN``                                 |
 +----------------------------------------+----------------------------------------+
 
-.. _Extended JSON format for the Decimal128 type: https://github.com/mongodb/specifications/blob/master/source/bson-decimal128/decimal128.rst#to-string-representation
+.. _Extended JSON format for the Decimal128 type: ./bson-decimal128/decimal128.rst#to-string-representation
 
 For example, a BSON floating-point number with a value of negative infinity
 would be encoded as Extended JSON as follows::
@@ -309,7 +309,7 @@ in which case it SHOULD follow these rules:
   wrapper in the Conversion table, but any of the **values** are of an incorrect
   type, then the parser MUST report an error.
 
-* If the ``$``-prefixed key does not match a known type wrapper in the 
+* If the ``$``-prefixed key does not match a known type wrapper in the
   Conversion table, the parser MUST NOT raise an error and MUST leave the value
   as-is. See `Restrictions and limitations`_ for additional information.
 
@@ -446,7 +446,7 @@ output:
 Generators MAY use these format names as part of function/method names or MAY
 use them as arguments or constants, as needed.
 
-If a generator provides a generic `to_json` or `to_extended_json` method, it
+If a generator provides a generic ``to_json`` or ``to_extended_json`` method, it
 MUST default to producing Relaxed Extended JSON or MUST be deprecated in
 favor of a spec-compliant method.
 
@@ -474,7 +474,7 @@ Test Plan
 Drivers, tools, and libraries can test their compliance to this specification by
 running the tests in version 2.0 and above of the `BSON Corpus Test Suite`_.
 
-.. _BSON Corpus Test Suite: https://github.com/mongodb/specifications/blob/master/source/bson-corpus/bson-corpus.rst
+.. _BSON Corpus Test Suite: ./bson-corpus/bson-corpus.rst
 
 Examples
 ========
@@ -752,7 +752,7 @@ canonicalises the form where the Javascript code is quoted, since the latter
 form adheres to the JSON specification and the former does not. As an
 additional note, the NPM mongodb-extended-json module uses the form ``{"code":
 "<javascript code>"}, omitting the dollar sign (``$``) from the key. This
-specification does not accomodate the eccentricity of a single library.
+specification does not accommodate the eccentricity of a single library.
 
 CodeWithScope
 '''''''''''''

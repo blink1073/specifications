@@ -93,7 +93,7 @@ individual driver operations.
 We break up the measurement this way to better isolate the benchmark from
 external volatility. If we consider the problem of benchmarking an operation
 over many iterations, such as 100,000 document insertions, we want to avoid
-two extreme forms of measurement:  
+two extreme forms of measurement:
 
 -  measuring a single insertion 100,000 times -- in this case, the timing
    code is likely to be a greater proportion of executed code, which
@@ -185,7 +185,7 @@ divided by the median wall clock time.
 Micro-benchmark definitions
 ===========================
 
-Datasets are available in the `data` directory adjacent to this spec.
+Datasets are available in the ``data`` directory adjacent to this spec.
 
 Note: The term "LDJSON" means "line-delimited JSON", which should be
 understood to mean a collection of UTF-8 encoded JSON documents (without

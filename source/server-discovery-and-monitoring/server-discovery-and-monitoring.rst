@@ -838,7 +838,7 @@ clientMinWireVersion is 2 and it connects to MongoDB 2.4, format the error like:
   of My Driver requires at least 2 (MongoDB 2.6)."
 
 In this second case, the exact required MongoDB version is known and can be
-named in the error message, whereas in the first case the implementor does not
+named in the error message, whereas in the first case the implementer does not
 know which MongoDB versions will be compatible or incompatible in the future.
 
 Verifying setName with TopologyType Single
@@ -1193,7 +1193,7 @@ likely a stale primary that is going to step down. Mark it Unknown and let perio
 monitoring detect when it becomes secondary. See
 `using electionId and setVersion to detect stale primaries`_.
 
-A note on checking "me": Unlike `updateRSWithPrimaryFromMember`, there is no need to remove the server if the address is not equal to
+A note on checking "me": Unlike ``updateRSWithPrimaryFromMember``, there is no need to remove the server if the address is not equal to
 "me": since the server address will not be a member of either "hosts", "passives", or "arbiters", the server will already have been
 removed.
 
@@ -1309,7 +1309,7 @@ implementation:
 
       with client.lock:
           # Ignore stale errors based on generation and topologyVersion.
-          if isStaleError(client.topologyDescription, error)
+          if isStaleError(client.topologyDescription, error):
               return
 
           if isStateChangeError(error):

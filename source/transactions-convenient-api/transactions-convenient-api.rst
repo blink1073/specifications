@@ -184,7 +184,7 @@ This method should perform the following sequence of actions:
       back to step two.
 
    c. If the callback's error includes a "UnknownTransactionCommitResult" label,
-      the callback must have manually commited a transaction, propagate the
+      the callback must have manually committed a transaction, propagate the
       callback's error to the caller of ``withTransaction`` and return
       immediately.
 
@@ -339,7 +339,7 @@ An original design considered requiring the callback to accept a ClientSession
 as its first parameter. That could be superfluous for languages where the
 callback might already have access to ClientSession through its lexical scope.
 Instead, the spec simply requires that drivers ensure the callback will be able
-to access the ClientSession. 
+to access the ClientSession.
 
 Similarly, the specification does not concern itself with the return type of the
 callback function. If drivers allow the callback to return a value, they may
@@ -440,7 +440,7 @@ however, that puts the onus on avoiding very long (or infinite) retry loops on
 the application. We expect the most common cause of retry loops will be due to
 TransientTransactionErrors caused by write conflicts, as those can occur
 regularly in a healthy application, as opposed to
-UnknownTransactionCommitResult, which would typically be caused by an election. 
+UnknownTransactionCommitResult, which would typically be caused by an election.
 
 In order to avoid blocking the application with infinite retry loops,
 ``withTransaction`` will cease retrying invocations of the callback or

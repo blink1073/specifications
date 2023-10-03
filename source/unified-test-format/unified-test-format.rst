@@ -938,7 +938,7 @@ The structure of this object is as follows:
 
   These requirements SHOULD be more restrictive than those specified in the
   top-level `runOnRequirements`_ (if any) and SHOULD NOT be more permissive.
-  This is advised because both sets of requirements MUST be satisified in order
+  This is advised because both sets of requirements MUST be satisfied in order
   for a test to be executed and more permissive requirements at the test-level
   could be taken out of context on their own.
 
@@ -1450,7 +1450,7 @@ The structure of each object is as follows:
   in ``ignoreMessages`` array before ``messages`` evaluation.
   Matching rules used to match messages in ``ignoreMessages`` are identical to match rules used for ``messages`` matching.
 
-- ``ignoreExtraMessages``: Optional boolean. Specifies how the ``messages`` array is matched 
+- ``ignoreExtraMessages``: Optional boolean. Specifies how the ``messages`` array is matched
   against the observed logs. If ``false``, observed logs after all specified logs have
   matched MUST cause a test failure; if ``true``, observed logs after all specified logs
   have been matched MUST NOT cause a test failure. Defaults to ``false``.
@@ -1704,7 +1704,7 @@ to null. Because drivers do not consistently propagate errors encountered while 
 client, test files SHOULD NOT specify `expectResult <operation_expectResult_>`_ or
 `expectError <operation_expectError_>`_ for this operation. Test files SHOULD NOT
 specify any operations for a client entity or any entity descended from it following
-a `close` operation on it, as driver behavior when an operation is attempted on a closed
+a ``close`` operation on it, as driver behavior when an operation is attempted on a closed
 client or one of its descendant objects is not consistent.
 
 .. _client_createChangeStream:
@@ -1843,7 +1843,7 @@ This method does not inherit a read preference (per the
 `Server Selection <../server-selection/server-selection.rst#use-of-read-preferences-with-commands>`__
 spec); however, ``readPreference`` may be specified as an argument.
 
-This operation proxies the database's ``runCursorCommand`` method and supports the same arguments and options (note: handling for `getMore` options may vary by driver implementation).
+This operation proxies the database's ``runCursorCommand`` method and supports the same arguments and options (note: handling for ``getMore`` options may vary by driver implementation).
 
 When executing the provided command, the test runner MUST fully iterate the cursor.
 This will ensure consistent behavior between drivers that eagerly create a server-side cursor and those that do so lazily when iteration begins.
@@ -1873,7 +1873,7 @@ The following arguments are supported:
 createCommandCursor
 ~~~~~~~~~~~~~~~~~~~
 
-This operation proxies the database's ``runCursorCommand`` method and supports the same arguments and options (note: handling for `getMore` options may vary by driver implementation).
+This operation proxies the database's ``runCursorCommand`` method and supports the same arguments and options (note: handling for ``getMore`` options may vary by driver implementation).
 Test runners MUST ensure that the server-side cursor is created (i.e. the command document has executed) as part of this operation and before the resulting cursor might be saved with `operation.saveResultAsEntity <operation_saveResultAsEntity_>`_.
 Test runners for drivers that lazily execute the command on the first iteration of the cursor MUST iterate the resulting cursor once.
 The result from this iteration MUST be used as the result for the first iteration operation on the cursor.
@@ -2012,9 +2012,9 @@ createSearchIndex
 
 This operations proxies the collection's ``createSearchIndex`` helper with the same arguments.
 
-Each ``createSearchIndex`` operation receives a `SearchIndexModel <https://github.com/mongodb/specifications/blob/master/source/index-management/index-management.rst#common-interfaces>`.  
-If a driver has chosen to implement the ``createSearchIndex(name: String, definition: Document)`` overload 
-of ``createSearchIndex``, then the ``SearchIndexModel`` should be parsed by ``createSearchIndex`` unified 
+Each ``createSearchIndex`` operation receives a `SearchIndexModel <https://github.com/mongodb/specifications/blob/master/source/index-management/index-management.rst#common-interfaces>`_.
+If a driver has chosen to implement the ``createSearchIndex(name: String, definition: Document)`` overload
+of ``createSearchIndex``, then the ``SearchIndexModel`` should be parsed by ``createSearchIndex`` unified
 test runner helper and the correct arguments should be passed into the driver's helper.
 
 createSearchIndexes
@@ -2180,7 +2180,7 @@ methods. The structure of ``source`` is as follows::
 
     { $$hexBytes: <string> }
 
-The string MUST contain an even number of hexademical characters
+The string MUST contain an even number of hexadecimal characters
 (case-insensitive) and MAY be empty. The test runner MUST raise an error if the
 structure of ``source`` or its string is malformed. The test runner MUST convert
 the string to a byte sequence denoting the stream's readable data (if any). For
@@ -2704,7 +2704,7 @@ The following arguments are supported:
   - ``time``: the number of (floating-point) seconds since the Unix epoch
     when the failure was encountered.
 
-- ``storeSuccessesAsEntity``: Optional string. If specfied, the runner MUST keep
+- ``storeSuccessesAsEntity``: Optional string. If specified, the runner MUST keep
   track of the number of sub-operations that completed successfully, and store
   that number in the specified entity. For example, if the loop contains
   two sub-operations, and they complete successfully, each loop execution
@@ -3221,7 +3221,7 @@ in a command document. To address this need, special operators can be used.
 These operators are objects with a single key identifying the operator. Such
 keys are prefixed with ``$$`` to ease in detecting an operator (test runners
 need only inspect the first key of each object) and differentiate the object
-from MongoDB query operators, which use a single `$` prefix. The key will map to
+from MongoDB query operators, which use a single ``$`` prefix. The key will map to
 some value that influences the operator's behavior (if applicable).
 
 When examining the structure of an expected value during a comparison, test
@@ -3328,7 +3328,7 @@ An example of this operator follows::
 $$matchesHexBytes
 `````````````````
 
-Syntax, where ``hexBytes`` is an even number of hexademical characters
+Syntax, where ``hexBytes`` is an even number of hexadecimal characters
 (case-insensitive) and MAY be empty::
 
     { $$matchesHexBytes: <hexBytes> }
@@ -3508,7 +3508,7 @@ For each element in `tests`_, follow the process in `Executing a Test`_.
 Executing a Test
 ~~~~~~~~~~~~~~~~
 
-The instructions in this section apply for each `test`_ occuring in a test file
+The instructions in this section apply for each `test`_ occurring in a test file
 loaded by the test runner. After processing a test, test runners MUST reset
 any internal state that resulted from doing so. For example, the `Entity Map`_
 created for one test MUST NOT be shared with another.
@@ -3578,7 +3578,7 @@ events for the following:
   spec) unless
   `observeSensitiveCommands <entity_client_observeSensitiveCommands_>`_ is true.
   Note that drivers will redact commands and replies for sensitive commands. For
-  ``hello`` and legacy hello, which are conditionally sensistive based on the
+  ``hello`` and legacy hello, which are conditionally sensitive based on the
   presence of a ``speculativeAuthenticate`` field, the test runner may need to
   infer that the events are sensitive based on whether or not the command and
   reply documents are redacted (i.e. empty documents).
@@ -3637,7 +3637,7 @@ Proceed to the subsequent test.
 Executing an Operation
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The instructions in this section apply for each `operation`_ occuring in a
+The instructions in this section apply for each `operation`_ occurring in a
 `test`_ contained within a test file loaded by the test runner.
 
 If at any point while executing an operation an unexpected error is encountered
@@ -3770,7 +3770,7 @@ Server Fail Points
 
 Many tests utilize the ``configureFailPoint`` command to trigger server-side
 errors such as dropped connections or command errors. Tests can configure fail
-points using the special `failPoint`_ or `targetedFailPoint`_ opertions.
+points using the special `failPoint`_ or `targetedFailPoint`_ operations.
 
 This internal command is not documented in the MongoDB manual (pending
 `DOCS-10784`_); however, there is scattered documentation available on the
@@ -4006,7 +4006,7 @@ Incorporate referenced entity operations into the schema version
 ----------------------------------------------------------------
 
 The `Schema Version`_ is not impacted by changes to operations defined in other
-specs and referenced in `Entity Test Operations` (e.g. ``find`` for CRUD). The
+specs and referenced in ``Entity Test Operations`` (e.g. ``find`` for CRUD). The
 `operation.name <operation_name_>`_ and
 `operation.arguments <operation_arguments_>`_ fields are loosely defined in the
 JSON schema as string and object types, respectively.
@@ -4036,7 +4036,7 @@ Changelog
              mongocryptd.
 :2023-06-13: **Schema version 1.15.**
              Add ``databaseName`` field to ``CommandFailedEvent`` and ``CommandSucceededEvent``.
-:2023-05-26: **Schema version 1.14.** 
+:2023-05-26: **Schema version 1.14.**
              Add ``topologyDescriptionChangedEvent``.
 :2023-05-17: Add ``runCursorCommand`` and ``createCommandCursor`` operations.
              Added ``commandCursor`` entity type which can be used with existing cursor operations.
@@ -4045,7 +4045,7 @@ Changelog
              balanced topologies.
 :2023-04-13: Remove ``readConcern`` and ``writeConcern`` options from ``runCommand`` operation.
 :2023-02-24: Fix typo in the description of the ``$$matchAsRoot`` matching operator.
-:2022-10-17: Add description of a `close` operation for client entities.
+:2022-10-17: Add description of a ``close`` operation for client entities.
 :2022-10-14: **Schema version 1.13.**
              Add support for logging assertions via the ``observeLogMessages`` field
              for client entities, along with a new top-level field ``expectLogMessages``

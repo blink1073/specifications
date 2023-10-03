@@ -68,7 +68,7 @@ MUST throw an exception in the following cases:
 
 If a URI is provided with the ``mongodb+srv`` scheme, the driver MUST first do
 the SRV and TXT lookup and then perform the validation. For drivers that do SRV
-lookup asynchrounously this may result in a ``MongoClient`` being instantiated
+lookup asynchronously this may result in a ``MongoClient`` being instantiated
 but erroring later during operation execution.
 
 
@@ -119,15 +119,15 @@ the topology is closed and MUST NOT emit any other events when operating in this
 Log Messages
 ^^^^^^^^^^^^
 
-SDAM events details described in `Monitoring <#monitoring>_` apply to corresponding log messages.
-Please refer to the `SDAM logging specification <../server-discovery-and-monitoring/server-discovery-and-monitoring-logging-and-monitoring#log-messages>`_ 
+SDAM events details described in `Monitoring <#monitoring>`__ apply to corresponding log messages.
+Please refer to the `SDAM logging specification <../server-discovery-and-monitoring/server-discovery-and-monitoring-logging-and-monitoring#log-messages>`_
 for details on SDAM logging. Drivers MUST emit the relevant SDAM log messages, such as:
 
-- `Starting Topology Monitoring <../server-discovery-and-monitoring/server-discovery-and-monitoring-logging-and-monitoring.rst#starting-topology-monitoring-log-message>`_ 
-- `Stopped Topology Mmonitoring <../server-discovery-and-monitoring/server-discovery-and-monitoring-logging-and-monitoring.rst#stopped-topology-monitoring-log-message>`_ 
-- `Starting Server Monitoring <../server-discovery-and-monitoring/server-discovery-and-monitoring-logging-and-monitoring.rst#starting-server-monitoring-log-message>`_ 
-- `Stopped Server Monitoring <../server-discovery-and-monitoring/server-discovery-and-monitoring-logging-and-monitoring.rst#stopped-server-monitoring-log-message>`_ 
-- `Topology Description Changed <../server-discovery-and-monitoring/server-discovery-and-monitoring-logging-and-monitoring.rst#topology-description-changed-log-message>`_ 
+- `Starting Topology Monitoring <../server-discovery-and-monitoring/server-discovery-and-monitoring-logging-and-monitoring.rst#starting-topology-monitoring-log-message>`_
+- `Stopped Topology Mmonitoring <../server-discovery-and-monitoring/server-discovery-and-monitoring-logging-and-monitoring.rst#stopped-topology-monitoring-log-message>`_
+- `Starting Server Monitoring <../server-discovery-and-monitoring/server-discovery-and-monitoring-logging-and-monitoring.rst#starting-server-monitoring-log-message>`_
+- `Stopped Server Monitoring <../server-discovery-and-monitoring/server-discovery-and-monitoring-logging-and-monitoring.rst#stopped-server-monitoring-log-message>`_
+- `Topology Description Changed <../server-discovery-and-monitoring/server-discovery-and-monitoring-logging-and-monitoring.rst#topology-description-changed-log-message>`_
 
 Driver Sessions
 ---------------
@@ -333,7 +333,7 @@ transaction is closed.
 
 Any applications that connect directly to services and not through the load balancer MUST connect
 via the regular service port as they normally would and not the port specified by the
-`loadBalancerPort` option. The `loadBalanced=true` URI option MUST be omitted in this case.
+``loadBalancerPort`` option. The ``loadBalanced=true`` URI option MUST be omitted in this case.
 
 
 Q&A

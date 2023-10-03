@@ -14,7 +14,7 @@ Drivers currently support a variety of options that allow users to configure con
 
 This specification does not apply to drivers that do not support multitasking.
 
-META 
+META
 ====
 
 The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in `RFC 2119 <https://www.ietf.org/rfc/rfc2119.txt>`_.
@@ -286,7 +286,7 @@ has the following properties:
        *  The Queue of threads waiting for a Connection to be available
        */
       waitQueue: WaitQueue;
-    
+
       /**
        *  A generation number representing the SDAM generation of the pool.
        */
@@ -311,11 +311,11 @@ has the following properties:
        *                      ready() method.
        *
        *   - "closed":        The pool is destroyed. No more Connections may ever be checked out nor any
-       *                      created in the background. The pool can be set to this sate via the close()
+       *                      created in the background. The pool can be set to this state via the close()
        *                      method. The pool cannot transition to any other state after being closed.
        */
       state: "paused" | "ready" | "closed";
-    
+
       // Any of the following connection counts may be computed rather than
       // actually stored on the pool.
 
@@ -324,7 +324,7 @@ has the following properties:
        *  ("pending" + "available" + "in use") the pool currently has
        */
       totalConnectionCount: number;
-    
+
       /**
        *  An integer expressing how many Connections are currently
        *  available in the pool.
@@ -350,7 +350,7 @@ has the following properties:
       /**
        *  Mark all current Connections as stale, clear the WaitQueue, and mark the pool as "paused".
        *  No connections may be checked out or created in this pool until ready() is called again.
-       *  interruptInUseConnections specifies whether the pool will force interrupt "in use" connections as part of the clear. 
+       *  interruptInUseConnections specifies whether the pool will force interrupt "in use" connections as part of the clear.
        *  Default false.
        */
       clear(interruptInUseConnections: Optional<Boolean>): void;
@@ -437,7 +437,7 @@ Creating a Connection (Internal Implementation)
 
 When creating a `Connection <#connection>`_, the initial `Connection <#connection>`_ is in a
 “pending” state. This only creates a “virtual” `Connection <#connection>`_, and
-performs no I/O. 
+performs no I/O.
 
 .. code::
 
@@ -630,7 +630,7 @@ Before a given `Connection <#connection>`_ is returned from checkOut, it must be
             # back in to the pool.
             wait until pendingConnectionCount < maxConnecting or a connection is available
             continue
-          
+
     except pool is "closed":
       emit ConnectionCheckOutFailedEvent(reason="poolClosed") and equivalent log message
       throw PoolClosedError
@@ -729,18 +729,18 @@ requests from the WaitQueue.
 
 The clearing method MUST provide the option to interrupt any in-use connections as part
 of the clearing (henceforth referred to as the interruptInUseConnections flag in this
-specification). "Interrupting a Connection" is defined as canceling whatever task the 
-Connection is currently performing and marking the Connection as perished (e.g. by closing 
+specification). "Interrupting a Connection" is defined as canceling whatever task the
+Connection is currently performing and marking the Connection as perished (e.g. by closing
 its underlying socket). The interrupting of these Connections MUST be performed as soon as possible
 but MUST NOT block the pool or prevent it from processing further requests. If the pool has a background
 thread, and it is responsible for interrupting in-use connections, its next run MUST be scheduled as soon as
 possible.
 
-The pool MUST only interrupt in-use Connections whose generation is less than or equal 
-to the generation of the pool at the moment of the clear (before the increment) 
-that used the interruptInUseConnections flag. Any operations that have their Connections 
-interrupted in this way MUST fail with a retryable error. If possible, the error SHOULD 
-be a PoolClearedError with the following message: "Connection to <pool address> interrupted 
+The pool MUST only interrupt in-use Connections whose generation is less than or equal
+to the generation of the pool at the moment of the clear (before the increment)
+that used the interruptInUseConnections flag. Any operations that have their Connections
+interrupted in this way MUST fail with a retryable error. If possible, the error SHOULD
+be a PoolClearedError with the following message: "Connection to <pool address> interrupted
 due to server monitor timeout".
 
 Clearing a load balanced pool
@@ -792,12 +792,12 @@ monitoring the state of all available `Connections <#connection>`_. This backgro
 thread SHOULD
 
 -  Populate `Connections <#connection>`_ to ensure that the pool always satisfies minPoolSize.
--  Remove and close perished available `Connections <#connection>`_ including "in use" connections if `interruptInUseConnections` option was set to true in the most recent pool clear.
+-  Remove and close perished available `Connections <#connection>`_ including "in use" connections if ``interruptInUseConnections`` option was set to true in the most recent pool clear.
 - Apply timeouts to connection establishment per `Client Side Operations
   Timeout: Background Connection Pooling
   <../client-side-operations-timeout/client-side-operations-timeout.rst#background-connection-pooling>`__.
 
-A pool SHOULD allow immediate scheduling of the next background thread iteration after a clear is performed. 
+A pool SHOULD allow immediate scheduling of the next background thread iteration after a clear is performed.
 
 Conceptually, the aforementioned activities are organized into sequential Background Thread Runs.
 A Run MUST do as much work as readily available and then end instead of waiting for more work.
@@ -888,12 +888,12 @@ See the `Load Balancer Specification <../load-balancers/load-balancers.rst#event
      *  Emitted when a Connection Pool creates a Connection object.
      *  NOTE: This does not mean that the Connection is ready for use.
      */
-    interface ConnectionCreatedEvent { 
+    interface ConnectionCreatedEvent {
       /**
        *  The ServerAddress of the Endpoint the pool is attempting to connect to.
        */
       address: string;
-    
+
       /**
        *  The ID of the Connection
        */
@@ -908,7 +908,7 @@ See the `Load Balancer Specification <../load-balancers/load-balancers.rst#event
        *  The ServerAddress of the Endpoint the pool is attempting to connect to.
        */
       address: string;
-    
+
       /**
        *  The ID of the Connection
        */
@@ -947,12 +947,12 @@ See the `Load Balancer Specification <../load-balancers/load-balancers.rst#event
        *  The ServerAddress of the Endpoint the pool is attempting to connect to.
        */
       address: string;
-    
+
       /**
        *  The ID of the Connection
        */
       connectionId: int64;
-    
+
       /**
        * A reason explaining why this Connection was closed.
        * Can be implemented as a string or enum.
@@ -984,7 +984,7 @@ See the `Load Balancer Specification <../load-balancers/load-balancers.rst#event
        *  The ServerAddress of the Endpoint the pool is attempting to connect to.
        */
       address: string;
-    
+
       /**
        *  A reason explaining why Connection check out failed.
        *  Can be implemented as a string or enum.
@@ -1050,7 +1050,7 @@ See the `Load Balancer Specification <../load-balancers/load-balancers.rst#event
        * The ServerAddress of the Endpoint the pool is attempting to connect to.
        */
       address: string;
-    
+
       /**
        *  The ID of the Connection
        */
@@ -1059,7 +1059,7 @@ See the `Load Balancer Specification <../load-balancers/load-balancers.rst#event
 
 Connection Pool Logging
 ~~~~~~~~~~~~~~~~~~~~~~~
-Please refer to the `logging specification <../logging/logging.rst>`_ for details on logging implementations in general, including log levels, log
+Please refer to the `logging specification <../logging/logging.rst>`__ for details on logging implementations in general, including log levels, log
 components, handling of null values in log messages, and structured versus unstructured logging.
 
 Drivers MUST support logging of connection pool information via the following types of log messages. These messages MUST be logged at ``Debug`` level
@@ -1090,7 +1090,7 @@ All connection log messages MUST contain the following key-value pairs:
    * - serverPort
      - Int
      - The port for the endpoint the pool is for. Optional; not present for Unix domain sockets. When
-       the user does not specify a port and the default (27017) is used, the driver SHOULD include it here. 
+       the user does not specify a port and the default (27017) is used, the driver SHOULD include it here.
 
 Pool Created Message
 ---------------------
@@ -1133,7 +1133,7 @@ In addition to the common fields defined above, this message MUST contain the fo
    * - waitQueueSize
      - Int
      - The waitQueueSize value for this pool. Optional; only required to include if the driver supports this option and the
-       user specified a value.          
+       user specified a value.
 
    * - waitQueueMultiple
      - Int
@@ -1290,12 +1290,12 @@ In addition to the common fields defined above, this message MUST contain the fo
        - Stale: "Connection became stale because the pool was cleared"
        - Idle: "Connection has been available but unused for longer than the configured max idle time"
        - Error: "An error occurred while using the connection"
-       - Pool closed: "Connection pool was closed" 
+       - Pool closed: "Connection pool was closed"
 
    * - error
      - Flexible
      - If ``reason`` is ``Error``, the associated error. The type and format of this value is flexible; see the
-       `logging specification <../logging/logging.rst#representing-errors-in-log-messages>`_  for details on representing errors in log messages.
+       `logging specification <../logging/logging.rst#representing-errors-in-log-messages>`__  for details on representing errors in log messages.
 
 The unstructured form SHOULD be as follows, using the values defined in the structured format above to fill in placeholders as appropriate:
 
@@ -1349,7 +1349,7 @@ In addition to the common fields defined above, this message MUST contain the fo
    * - error
      - Flexible
      - If ``reason`` is ``ConnectionError``, the associated error. The type and format of this value is flexible; see the
-       `logging specification <../logging/logging.rst#representing-errors-in-log-messages>`_  for details on representing errors in log messages.
+       `logging specification <../logging/logging.rst#representing-errors-in-log-messages>`__  for details on representing errors in log messages.
 
    * - durationMS
      - Int64
@@ -1474,9 +1474,9 @@ ConnectionClosed indicates that the `Connection <#connection>`_ is no longer a m
 Why are waitQueueSize and waitQueueMultiple deprecated?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-These options were originally only implemented in three drivers (Java, C#, and Python), and provided little value. While these fields would allow for faster diagnosis of issues in the connection pool, they would not actually prevent an error from occurring. 
+These options were originally only implemented in three drivers (Java, C#, and Python), and provided little value. While these fields would allow for faster diagnosis of issues in the connection pool, they would not actually prevent an error from occurring.
 
-Additionally, these options have the effect of prioritizing older requests over newer requests, which is not necessarily the behavior that users want. They can also result in cases where queue access oscillates back and forth between full and not full. If a driver has a full waitQueue, then all requests for `Connections <#connection>`_ will be rejected. If the client is continually spammed with requests, you could wind up with a scenario where as soon as the waitQueue is no longer full, it is immediately filled. It is not a favorable situation to be in, partially b/c it violates the fairness guarantee that the waitQueue normally provides. 
+Additionally, these options have the effect of prioritizing older requests over newer requests, which is not necessarily the behavior that users want. They can also result in cases where queue access oscillates back and forth between full and not full. If a driver has a full waitQueue, then all requests for `Connections <#connection>`_ will be rejected. If the client is continually spammed with requests, you could wind up with a scenario where as soon as the waitQueue is no longer full, it is immediately filled. It is not a favorable situation to be in, partially b/c it violates the fairness guarantee that the waitQueue normally provides.
 
 Because of these issues, it does not make sense to `go against driver mantras and provide an additional knob <../../README.rst#>`__. We may eventually pursue an alternative configurations to address wait queue size in `Advanced Pooling Behaviors <#advanced-pooling-behaviors>`__.
 
@@ -1509,7 +1509,7 @@ would block application threads, introducing unnecessary latency. Once
 a `Connection <#connection>`_ is marked as "closed", it will not be checked out
 again, so ensuring the socket is torn down does not need to happen
 immediately and can happen at a later time, either via async I/O or a
-background thread. 
+background thread.
 
 Why can the pool be paused?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1549,21 +1549,21 @@ the ServerDescription for the endpoint was not updated accordingly yet.
 Why does the pool need to support interrupting in use connections as part of its clear logic?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 If a SDAM monitor has observed a network timeout, we assume that all connections
-including "in use" connections are no longer healthy. In some cases connections 
-will fail to detect the network timeout fast enough. For example, a server request 
-can hang at the OS level in TCP retry loop up for 17 minutes before failing. Therefore 
-these connections MUST be proactively interrupted in the case of a server monitor network timeout. 
-Requesting an immediate backround thread run will speed up this process.
+including "in use" connections are no longer healthy. In some cases connections
+will fail to detect the network timeout fast enough. For example, a server request
+can hang at the OS level in TCP retry loop up for 17 minutes before failing. Therefore
+these connections MUST be proactively interrupted in the case of a server monitor network timeout.
+Requesting an immediate background thread run will speed up this process.
 
 Why don't we configure TCP_USER_TIMEOUT?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Ideally, a reasonable TCP_USER_TIMEOUT can help with detecting stale connections as an 
-alternative to `interruptInUseConnections` in Clear. 
+Ideally, a reasonable TCP_USER_TIMEOUT can help with detecting stale connections as an
+alternative to ``interruptInUseConnections`` in Clear.
 Unfortunately this approach is platform dependent and not each driver allows easily configuring it.
-For example, C# driver can configure this socket option on linux only with target frameworks 
-higher or equal to .net 5.0. On macOS, there is no straight equavalent for this option, 
-it's possible that we can find some equavalent configuration, but this configuration will also 
-require target frameworks higher than or equal to .net 5.0. The advantage of using Background Thread to 
+For example, C# driver can configure this socket option on linux only with target frameworks
+higher or equal to .net 5.0. On macOS, there is no straight equivalent for this option,
+it's possible that we can find some equivalent configuration, but this configuration will also
+require target frameworks higher than or equal to .net 5.0. The advantage of using Background Thread to
 manage perished connections is that it will work regardless of environment setup.
 
 Backwards Compatibility
