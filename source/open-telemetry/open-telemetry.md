@@ -498,7 +498,10 @@ A URI options can be added later if we realise our users need it, while the oppo
 
 ## Changelog
 
-- 2026-08-19: Add `error.type` to the Command Span Attributes table. Operation spans MUST NOT carry `error.type`.
+- 2026-08-19: Specified the `error.type` attribute on command spans, which matches `db.response.status_code` when the
+    command failed with a server error and is otherwise the name of the exception class the driver raises. Specified
+    that drivers MUST NOT set it when the command succeeds, that it SHOULD have a low number of distinct values, and
+    that operation spans MUST NOT carry it.
 
 - 2026-08-11: Specified that each `getMore` command is nested under its own new operation span, sibling to the operation
     span of the command that created the cursor, when the caller drives cursor iteration. Specified that
