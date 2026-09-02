@@ -251,9 +251,8 @@ if available:
 - `exception.type`
 - `exception.stacktrace`
 
-Unlike command spans, operation spans MUST NOT have an `error.type` attribute: an operation can succeed overall (e.g.
-via retry) even when one of its underlying commands failed, so `error.type`'s command-level derivation does not carry
-over to the operation span.
+Unlike command spans, operation spans MUST NOT have an `error.type` attribute. An operation can succeed through a retry
+even when one of its commands failed, so the command-level derivation does not carry over.
 
 #### Instrumenting Server Commands
 
@@ -372,19 +371,18 @@ omit it when a cursor-creating command's reply returns `0`.
 
 ###### error.type
 
-This attribute SHOULD match `db.response.status_code` when the command failed with a server error (i.e., the server
-returned an error code in its response). Otherwise, this attribute SHOULD be the name of the exception class the driver
+This attribute SHOULD match `db.response.status_code` when the command failed with a server error, meaning the server
+returned an error code in its response. Otherwise, this attribute SHOULD be the name of the exception class the driver
 raises to the application.
 
 Drivers MUST NOT set this attribute when the command succeeds. Per the
 [OpenTelemetry semantic conventions for `error.type`](https://opentelemetry.io/docs/specs/semconv/registry/attributes/error/#error-type),
-this attribute SHOULD have a low number of distinct values, since it is intended to be used as a dimension for grouping
-and alerting on failures in tracing backends.
+this attribute SHOULD have a low number of distinct values, because tracing backends use it as a dimension for grouping
+and alerting on failures.
 
-`error.type` is a span attribute, deliberately duplicating the information carried by the `exception.type` attribute of
-the exception *event* recorded on the same span (see Exceptions below). The duplication is intentional: tracing backends
-query and aggregate on span attributes, not on the attributes of events nested within a span, so `error.type` is what
-makes error class queryable at the span level.
+`error.type` deliberately duplicates the `exception.type` attribute of the exception *event* recorded on the same span
+(see Exceptions below). Tracing backends query and aggregate on span attributes, not on the attributes of events nested
+within a span, so only `error.type` makes the error class queryable at the span level.
 
 ##### Exceptions
 
