@@ -372,8 +372,9 @@ omit it when a cursor-creating command's reply returns `0`.
 ###### error.type
 
 This attribute SHOULD match `db.response.status_code` when the command failed with a server error, meaning the server
-returned an error code in its response. Otherwise, this attribute SHOULD be the name of the exception class the driver
-raises to the application.
+returned an error code in its response. Otherwise, this attribute SHOULD be the name of the exception class associated
+with that command's failure, whether or not the operation ultimately raises it to the application: a retry of the same
+operation may still succeed.
 
 Drivers MUST NOT set this attribute when the command succeeds. Per the
 [OpenTelemetry semantic conventions for `error.type`](https://opentelemetry.io/docs/specs/semconv/registry/attributes/error/#error-type),
