@@ -380,9 +380,9 @@ Drivers MUST NOT set this attribute when the command succeeds. Per the
 this attribute SHOULD have a low number of distinct values, because tracing backends use it as a dimension for grouping
 and alerting on failures.
 
-`error.type` deliberately duplicates the `exception.type` attribute of the exception *event* recorded on the same span
-(see Exceptions below). Tracing backends query and aggregate on span attributes, not on the attributes of events nested
-within a span, so only `error.type` makes the error class queryable at the span level.
+Tracing backends query and aggregate on span attributes, not on the attributes of events nested within a span.
+`error.type` makes the error class queryable at the span level. For a non-server error, it carries the same value as the
+`exception.type` attribute of the exception *event* recorded on the same span (see Exceptions below).
 
 ##### Exceptions
 
