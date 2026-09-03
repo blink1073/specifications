@@ -4,13 +4,6 @@ createEntities:
   - client:
       id: &client0 client0
       useMultipleMongoses: false
-      uriOptions:
-        retryReads: false
-      observeTracingMessages:
-        enableCommandPayload: false
-  - client:
-      id: &retryClient retryClient
-      useMultipleMongoses: false
       observeTracingMessages:
         enableCommandPayload: false
   - client:
@@ -24,14 +17,6 @@ createEntities:
       id: &collection0 collection0
       database: *database0
       collectionName: &collection0Name test
-  - database:
-      id: &retryDatabase retryDatabase
-      client: *retryClient
-      databaseName: *database0Name
-  - collection:
-      id: &retryCollection retryCollection
-      database: *retryDatabase
-      collectionName: *collection0Name
 initialData:
   - collectionName: test
     databaseName: operation-error-type
@@ -102,7 +87,7 @@ tests:
           client: *failPointClient
           failPoint:
             configureFailPoint: failCommand
-            mode: { times: 1 }
+            mode: { times: 2 }
             data:
               failCommands: [ find ]
               closeConnection: true
@@ -131,6 +116,23 @@ tests:
               error.type: { $$exists: false }
 
             nested:
+              - name: find
+                attributes:
+                  db.system.name: mongodb
+                  db.namespace: *database0Name
+                  db.collection.name: *collection0Name
+                  db.command.name: find
+                  network.transport: tcp
+                  db.response.status_code: { $$exists: false }
+                  error.type: { $$type: string }
+                  exception.message: { $$type: string }
+                  exception.type: { $$type: string }
+                  exception.stacktrace: { $$type: string }
+                  server.address: { $$type: string }
+                  server.port: { $$type: [ long, string ] }
+                  db.query.summary: find operation-error-type.test
+                  db.mongodb.driver_connection_id:
+                    $$type: [ int, long ]
               - name: find
                 attributes:
                   db.system.name: mongodb
@@ -205,12 +207,12 @@ tests:
               errorLabels: [ RetryableWriteError ]
 
       - name: find
-        object: *retryCollection
+        object: *collection0
         arguments:
           filter: { x: 1 }
 
     expectTracingMessages:
-      - client: *retryClient
+      - client: *client0
         ignoreExtraSpans: true
         spans:
           - name: find operation-error-type.test

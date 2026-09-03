@@ -6,18 +6,6 @@
       "client": {
         "id": "client0",
         "useMultipleMongoses": false,
-        "uriOptions": {
-          "retryReads": false
-        },
-        "observeTracingMessages": {
-          "enableCommandPayload": false
-        }
-      }
-    },
-    {
-      "client": {
-        "id": "retryClient",
-        "useMultipleMongoses": false,
         "observeTracingMessages": {
           "enableCommandPayload": false
         }
@@ -40,20 +28,6 @@
       "collection": {
         "id": "collection0",
         "database": "database0",
-        "collectionName": "test"
-      }
-    },
-    {
-      "database": {
-        "id": "retryDatabase",
-        "client": "retryClient",
-        "databaseName": "operation-error-type"
-      }
-    },
-    {
-      "collection": {
-        "id": "retryCollection",
-        "database": "retryDatabase",
         "collectionName": "test"
       }
     }
@@ -188,7 +162,7 @@
             "failPoint": {
               "configureFailPoint": "failCommand",
               "mode": {
-                "times": 1
+                "times": 2
               },
               "data": {
                 "failCommands": [
@@ -239,6 +213,47 @@
                 }
               },
               "nested": [
+                {
+                  "name": "find",
+                  "attributes": {
+                    "db.system.name": "mongodb",
+                    "db.namespace": "operation-error-type",
+                    "db.collection.name": "test",
+                    "db.command.name": "find",
+                    "network.transport": "tcp",
+                    "db.response.status_code": {
+                      "$$exists": false
+                    },
+                    "error.type": {
+                      "$$type": "string"
+                    },
+                    "exception.message": {
+                      "$$type": "string"
+                    },
+                    "exception.type": {
+                      "$$type": "string"
+                    },
+                    "exception.stacktrace": {
+                      "$$type": "string"
+                    },
+                    "server.address": {
+                      "$$type": "string"
+                    },
+                    "server.port": {
+                      "$$type": [
+                        "long",
+                        "string"
+                      ]
+                    },
+                    "db.query.summary": "find operation-error-type.test",
+                    "db.mongodb.driver_connection_id": {
+                      "$$type": [
+                        "int",
+                        "long"
+                      ]
+                    }
+                  }
+                },
                 {
                   "name": "find",
                   "attributes": {
@@ -397,7 +412,7 @@
         },
         {
           "name": "find",
-          "object": "retryCollection",
+          "object": "collection0",
           "arguments": {
             "filter": {
               "x": 1
@@ -407,7 +422,7 @@
       ],
       "expectTracingMessages": [
         {
-          "client": "retryClient",
+          "client": "client0",
           "ignoreExtraSpans": true,
           "spans": [
             {
