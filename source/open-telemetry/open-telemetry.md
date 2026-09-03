@@ -380,9 +380,9 @@ Drivers MUST NOT set this attribute when the command succeeds. Per the
 this attribute SHOULD have a low number of distinct values, because tracing backends use it as a dimension for grouping
 and alerting on failures.
 
-Tracing backends query and aggregate on span attributes, not on the attributes of events nested within a span.
-`error.type` makes the error class queryable at the span level. For a non-server error, it carries the same value as the
-`exception.type` attribute of the exception *event* recorded on the same span (see Exceptions below).
+`error.type` is the OpenTelemetry semantic-convention attribute for this purpose, and the name tracing backends
+recognize for it. `exception.type` (see Exceptions below) is not part of that convention, even though drivers also add
+it to the span. For a non-server error, `error.type` carries the same value as `exception.type`.
 
 ##### Exceptions
 

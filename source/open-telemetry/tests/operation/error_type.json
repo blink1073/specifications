@@ -16,6 +16,15 @@
     },
     {
       "client": {
+        "id": "retryClient",
+        "useMultipleMongoses": false,
+        "observeTracingMessages": {
+          "enableCommandPayload": false
+        }
+      }
+    },
+    {
+      "client": {
         "id": "failPointClient",
         "useMultipleMongoses": false
       }
@@ -31,6 +40,20 @@
       "collection": {
         "id": "collection0",
         "database": "database0",
+        "collectionName": "test"
+      }
+    },
+    {
+      "database": {
+        "id": "retryDatabase",
+        "client": "retryClient",
+        "databaseName": "operation-error-type"
+      }
+    },
+    {
+      "collection": {
+        "id": "retryCollection",
+        "database": "retryDatabase",
         "collectionName": "test"
       }
     }
@@ -294,6 +317,155 @@
                 }
               },
               "nested": [
+                {
+                  "name": "find",
+                  "attributes": {
+                    "db.system.name": "mongodb",
+                    "db.namespace": "operation-error-type",
+                    "db.collection.name": "test",
+                    "db.command.name": "find",
+                    "network.transport": "tcp",
+                    "db.response.status_code": {
+                      "$$exists": false
+                    },
+                    "error.type": {
+                      "$$exists": false
+                    },
+                    "exception.message": {
+                      "$$exists": false
+                    },
+                    "exception.type": {
+                      "$$exists": false
+                    },
+                    "exception.stacktrace": {
+                      "$$exists": false
+                    },
+                    "server.address": {
+                      "$$type": "string"
+                    },
+                    "server.port": {
+                      "$$type": [
+                        "long",
+                        "string"
+                      ]
+                    },
+                    "db.query.summary": "find operation-error-type.test",
+                    "db.mongodb.server_connection_id": {
+                      "$$type": [
+                        "int",
+                        "long"
+                      ]
+                    },
+                    "db.mongodb.driver_connection_id": {
+                      "$$type": [
+                        "int",
+                        "long"
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "error.type on a failed retried command does not appear on the operation span",
+      "operations": [
+        {
+          "name": "failPoint",
+          "object": "testRunner",
+          "arguments": {
+            "client": "failPointClient",
+            "failPoint": {
+              "configureFailPoint": "failCommand",
+              "mode": {
+                "times": 1
+              },
+              "data": {
+                "failCommands": [
+                  "find"
+                ],
+                "errorCode": 89,
+                "errorLabels": [
+                  "RetryableWriteError"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "name": "find",
+          "object": "retryCollection",
+          "arguments": {
+            "filter": {
+              "x": 1
+            }
+          }
+        }
+      ],
+      "expectTracingMessages": [
+        {
+          "client": "retryClient",
+          "ignoreExtraSpans": true,
+          "spans": [
+            {
+              "name": "find operation-error-type.test",
+              "attributes": {
+                "db.system.name": "mongodb",
+                "db.namespace": "operation-error-type",
+                "db.collection.name": "test",
+                "db.operation.name": "find",
+                "db.operation.summary": "find operation-error-type.test",
+                "error.type": {
+                  "$$exists": false
+                }
+              },
+              "nested": [
+                {
+                  "name": "find",
+                  "attributes": {
+                    "db.system.name": "mongodb",
+                    "db.namespace": "operation-error-type",
+                    "db.collection.name": "test",
+                    "db.command.name": "find",
+                    "network.transport": "tcp",
+                    "db.response.status_code": "89",
+                    "error.type": "89",
+                    "exception.message": {
+                      "$$type": "string"
+                    },
+                    "exception.type": {
+                      "$$type": "string"
+                    },
+                    "exception.stacktrace": {
+                      "$$type": "string"
+                    },
+                    "server.address": {
+                      "$$type": "string"
+                    },
+                    "server.port": {
+                      "$$type": [
+                        "long",
+                        "string"
+                      ]
+                    },
+                    "db.query.summary": "find operation-error-type.test",
+                    "db.mongodb.server_connection_id": {
+                      "$$type": [
+                        "int",
+                        "long"
+                      ]
+                    },
+                    "db.mongodb.driver_connection_id": {
+                      "$$type": [
+                        "int",
+                        "long"
+                      ]
+                    }
+                  }
+                },
                 {
                   "name": "find",
                   "attributes": {
