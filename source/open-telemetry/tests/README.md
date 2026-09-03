@@ -103,3 +103,16 @@ attribute against another. This test asserts the stronger claim that the two att
     raised exception's fully qualified class name.
 5. Assert that the operation span's `error.type` attribute equals its `exception.type` attribute, and that both equal
     the raised exception's fully qualified class name.
+
+*Test 6: `error.type` equals `exception.type` on the operation span for a server error*
+
+The unified fixture's server-error case asserts only that the operation span's `error.type` is a string, since matching
+cannot compare one observed attribute against another, or assert that it differs from the command span's server error
+code. This test asserts the stronger claim: the operation span's `error.type` equals its `exception.type`, not the
+command span's `db.response.status_code`.
+
+1. Create a `MongoClient` with tracing enabled.
+2. Configure a `failCommand` fail point on `find` with a non-retryable `errorCode`.
+3. Call `find` on a test collection and let it fail.
+4. Assert that the operation span's `error.type` attribute equals its `exception.type` attribute, and that both equal
+    the raised exception's fully qualified class name rather than the server error code.
