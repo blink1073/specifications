@@ -185,14 +185,15 @@ Span kind MUST be "client".
 
 Spans SHOULD have the following attributes:
 
-| Attribute              | Type     | Description                                                                | Requirement Level     |
-| :--------------------- | :------- | :------------------------------------------------------------------------- | :-------------------- |
-| `db.system.name`       | `string` | MUST be 'mongodb'                                                          | Required              |
-| `db.namespace`         | `string` | The database name                                                          | Required if available |
-| `db.collection.name`   | `string` | The collection being accessed within the database stated in `db.namespace` | Required if available |
-| `db.operation.name`    | `string` | The name of the driver operation being executed                            | Required              |
-| `db.operation.summary` | `string` | Equivalent to span name                                                    | Required              |
-| `db.mongodb.cursor_id` | `int64`  | If a cursor is created or used in the operation (see below)                | Conditional           |
+| Attribute              | Type     | Description                                                                  | Requirement Level     |
+| :--------------------- | :------- | :--------------------------------------------------------------------------- | :-------------------- |
+| `db.system.name`       | `string` | MUST be 'mongodb'                                                            | Required              |
+| `db.namespace`         | `string` | The database name                                                            | Required if available |
+| `db.collection.name`   | `string` | The collection being accessed within the database stated in `db.namespace`   | Required if available |
+| `db.operation.name`    | `string` | The name of the driver operation being executed                              | Required              |
+| `db.operation.summary` | `string` | Equivalent to span name                                                      | Required              |
+| `db.mongodb.cursor_id` | `int64`  | If a cursor is created or used in the operation (see below)                  | Conditional           |
+| `error.type`           | `string` | If the operation fails, the name of the raised exception's class (see below) | Conditional           |
 
 Not all attributes are available at the moment of span creation. Drivers need to add attributes at later stages, which
 requires an operation span to be available throughout the complete operation lifecycle.
@@ -251,8 +252,10 @@ if available:
 - `exception.type`
 - `exception.stacktrace`
 
-Unlike command spans, operation spans MUST NOT have an `error.type` attribute. An operation can succeed through a retry
-even when one of its commands failed, so the command-level derivation does not carry over.
+Operation spans MUST NOT have an `error.type` attribute when the operation succeeds, even if one of its commands failed:
+an operation can succeed through a retry, so a failed command's `error.type` does not carry over. When the operation
+itself fails, `error.type` SHOULD be the name of the exception class raised to the application, the same value as the
+operation span's `exception.type` attribute above.
 
 #### Instrumenting Server Commands
 
@@ -500,9 +503,10 @@ A URI options can be added later if we realise our users need it, while the oppo
 ## Changelog
 
 - 2026-08-19: Specified the `error.type` attribute on command spans, which matches `db.response.status_code` when the
-    command failed with a server error and is otherwise the name of the exception class the driver raises. Specified
-    that drivers MUST NOT set it when the command succeeds, that it SHOULD have a low number of distinct values, and
-    that operation spans MUST NOT carry it.
+    command failed with a server error and is otherwise the name of the exception class associated with that command's
+    failure. Specified that drivers MUST NOT set it when the command succeeds, that it SHOULD have a low number of
+    distinct values, and that operation spans MUST NOT carry it unless the operation itself fails, in which case it
+    matches the operation span's `exception.type`.
 
 - 2026-08-11: Specified that each `getMore` command is nested under its own new operation span, sibling to the operation
     span of the command that created the cursor, when the caller drives cursor iteration. Specified that
