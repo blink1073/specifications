@@ -89,3 +89,15 @@ asserts the stronger claim that the value equals the id the driver sent, which n
     returns a cursor id of `0`.
 5. Assert that both the `getMore` operation span and the `getMore` command span have a `db.mongodb.cursor_id` attribute
     whose value equals the cursor id recorded in step 3.
+
+*Test 5: `error.type` equals `exception.type` for a non-server error*
+
+The unified fixture [tests/operation/error_type.yml](operation/error_type.yml) asserts only that `error.type` is a
+string for a non-server error, since matching cannot compare one observed attribute against another. This test asserts
+the stronger claim that the two attributes are equal.
+
+1. Create a `MongoClient` with tracing enabled and `retryReads` disabled.
+2. Configure a `failCommand` fail point on `find` with `closeConnection: true`.
+3. Call `find` on a test collection and let it fail.
+4. Assert that the command span's `error.type` attribute equals its `exception.type` attribute, and that both equal the
+    raised exception's fully qualified class name.
