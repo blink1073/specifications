@@ -185,15 +185,15 @@ Span kind MUST be "client".
 
 Spans SHOULD have the following attributes:
 
-| Attribute              | Type     | Description                                                                  | Requirement Level     |
-| :--------------------- | :------- | :--------------------------------------------------------------------------- | :-------------------- |
-| `db.system.name`       | `string` | MUST be 'mongodb'                                                            | Required              |
-| `db.namespace`         | `string` | The database name                                                            | Required if available |
-| `db.collection.name`   | `string` | The collection being accessed within the database stated in `db.namespace`   | Required if available |
-| `db.operation.name`    | `string` | The name of the driver operation being executed                              | Required              |
-| `db.operation.summary` | `string` | Equivalent to span name                                                      | Required              |
-| `db.mongodb.cursor_id` | `int64`  | If a cursor is created or used in the operation (see below)                  | Conditional           |
-| `error.type`           | `string` | If the operation fails, the name of the raised exception's class (see below) | Conditional           |
+| Attribute              | Type     | Description                                                                | Requirement Level     |
+| :--------------------- | :------- | :------------------------------------------------------------------------- | :-------------------- |
+| `db.system.name`       | `string` | MUST be 'mongodb'                                                          | Required              |
+| `db.namespace`         | `string` | The database name                                                          | Required if available |
+| `db.collection.name`   | `string` | The collection being accessed within the database stated in `db.namespace` | Required if available |
+| `db.operation.name`    | `string` | The name of the driver operation being executed                            | Required              |
+| `db.operation.summary` | `string` | Equivalent to span name                                                    | Required              |
+| `db.mongodb.cursor_id` | `int64`  | If a cursor is created or used in the operation (see below)                | Conditional           |
+| `error.type`           | `string` | The exception class's name, if the operation fails (see below)             | Conditional           |
 
 Not all attributes are available at the moment of span creation. Drivers need to add attributes at later stages, which
 requires an operation span to be available throughout the complete operation lifecycle.
