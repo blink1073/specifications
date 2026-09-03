@@ -93,11 +93,13 @@ asserts the stronger claim that the value equals the id the driver sent, which n
 *Test 5: `error.type` equals `exception.type` for a non-server error*
 
 The unified fixture [tests/operation/error_type.yml](operation/error_type.yml) asserts only that `error.type` is a
-string for a non-server error, since matching cannot compare one observed attribute against another. This test asserts
-the stronger claim that the two attributes are equal.
+string, on both the command and operation spans, for a non-server error, since matching cannot compare one observed
+attribute against another. This test asserts the stronger claim that the two attributes are equal on each span.
 
 1. Create a `MongoClient` with tracing enabled and `retryReads` disabled.
 2. Configure a `failCommand` fail point on `find` with `closeConnection: true`.
 3. Call `find` on a test collection and let it fail.
 4. Assert that the command span's `error.type` attribute equals its `exception.type` attribute, and that both equal the
     raised exception's fully qualified class name.
+5. Assert that the operation span's `error.type` attribute equals its `exception.type` attribute, and that both equal
+    the raised exception's fully qualified class name.

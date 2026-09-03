@@ -193,7 +193,7 @@ Spans SHOULD have the following attributes:
 | `db.operation.name`    | `string` | The name of the driver operation being executed                            | Required              |
 | `db.operation.summary` | `string` | Equivalent to span name                                                    | Required              |
 | `db.mongodb.cursor_id` | `int64`  | If a cursor is created or used in the operation (see below)                | Conditional           |
-| `error.type`           | `string` | The exception class's name, if the operation fails (see below)             | Conditional           |
+| `error.type`           | `string` | The exception class's name, if the operation fails (see below)             | Required if it fails  |
 
 Not all attributes are available at the moment of span creation. Drivers need to add attributes at later stages, which
 requires an operation span to be available throughout the complete operation lifecycle.
@@ -253,9 +253,9 @@ if available:
 - `exception.stacktrace`
 
 Operation spans MUST NOT have an `error.type` attribute when the operation succeeds, even if one of its commands failed:
-an operation can succeed through a retry, so a failed command's `error.type` does not carry over. When the operation
-itself fails, `error.type` SHOULD be the name of the exception class raised to the application, the same value as the
-operation span's `exception.type` attribute above.
+an operation can succeed through a retry, so a failed command's `error.type` does not carry over. Drivers MUST add this
+attribute to the span when the operation itself fails. Its value SHOULD be the name of the exception class raised to the
+application, the same value as the operation span's `exception.type` attribute above.
 
 #### Instrumenting Server Commands
 
